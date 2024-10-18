@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Relatórios</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="mt-5">Relatórios enviados</h2>
+        
+        <div id="tabelaRelatorios" class="mt-5">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Data de envio</th>
+                        <th>Título</th>
+                        <th>Nota do Professor</th>
+                        <th>Nota da CCP</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaBody">
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        const nusp_aluno = "{{ nusp_aluno }}";
+
+        fetch(`/relatorios/${nusp_aluno}`)
+            .then(response => response.json())
+            .then(data => {
+                const tabelaBody = document.getElementById('tabelaBody');
+                
+                // Limpa a tabela antes de inserir novos dados
+                tabelaBody.innerHTML = '';
+
+                // Itera sobre os relatórios retornados e cria as linhas da tabela
+                data.relatorios.forEach(relatorio => {
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>${new Date(relatorio.data_envio).toLocaleDateString()}</td>
+                        <td>${relatorio.titulo}</td>
+                        <td>${relatorio.nota_professor}</td>
+                        <td>${relatorio.nota_ccp}</td>
+                    `;
+
+                    row.addEventListener('click', function() {
+                        window.location.href = `/relatorio/${relatorio.id}`;
+                    });
+
+                    tabelaBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao buscar relatórios:', error);
+            });
+    </script>
+
+    <!-- Bootstrap JS Bundle (inclui Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

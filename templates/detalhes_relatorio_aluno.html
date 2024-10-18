@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Relatório</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .col {
+            border: 1px solid #ddd;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-5">Detalhes do Relatório</h2>
+        <div class="row content">
+            <div class="col-md-4 col">
+                <h4>Título do Relatório</h4>
+                <p id="titulo">Carregando...</p>
+                <h5>Texto do Relatório</h5>
+                <p id="texto">Carregando...</p>
+            </div>
+            <div class="col-md-4 col">
+                <h4>Nota do Professor</h4>
+                <p id="nota_professor">Carregando...</p>
+                <h5>Parecer do Professor</h5>
+                <p id="parecer_professor">Carregando...</p>
+            </div>
+            <div class="col-md-4 col">
+                <h4>Nota da CCP</h4>
+                <p id="nota_ccp">Carregando...</p>
+                <h5>Parecer da CCP</h5>
+                <p id="parecer_ccp">Carregando...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulando a obtenção de dados do relatório com o ID passado na URL
+        const relatorio_id = window.location.pathname.split('/').pop();
+
+        fetch(`/detalhes_relatorio/${relatorio_id}`)
+            .then(response => response.json())
+            .then(data => {
+                const relatorio = data.relatorios[0];
+
+                document.getElementById('titulo').textContent = relatorio.titulo;
+                document.getElementById('texto').textContent = relatorio.texto;
+                document.getElementById('nota_professor').textContent = relatorio.nota_professor;
+                document.getElementById('parecer_professor').textContent = relatorio.parecer_professor;
+                document.getElementById('nota_ccp').textContent = relatorio.nota_ccp;
+                document.getElementById('parecer_ccp').textContent = relatorio.parecer_ccp;
+            });
+    </script>
+
+    <!-- Bootstrap JS Bundle (inclui Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
