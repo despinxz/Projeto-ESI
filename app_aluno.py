@@ -22,5 +22,22 @@ def get_detalhes_relatorio(relatorio_id):
     results = conn_bd.busca_relatorio(where='id', value=relatorio_id)
     return results
 
+@app.route('/novo_relatorio/<nusp_aluno>', methods=['GET', 'POST'])
+def forms_relatorio(nusp_aluno):
+    if request.method == 'POST':
+        dados = request.json
+
+        atividades_resp = dados.get('atividades_resp')
+        pesquisas_resp = dados.get('pesquisas_resp')
+        observacoes_resp = dados.get('observacoes_resp')
+        dificuldade = dados.get('dificuldade')
+        escrita = dados.get('escrita')
+        aval = dados.get('aval')
+        publicados = dados.get('publicados')
+
+        return conn_bd.inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados)
+
+    return render_template('formulario_relatorio_aluno.html', nusp_aluno=nusp_aluno)
+
 if __name__ == '__main__':
     app.run(debug=True)
