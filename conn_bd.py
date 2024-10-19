@@ -45,8 +45,8 @@ def busca_relatorio(where=None, value=None):
             'texto': relatorio[2],
             'data_envio': relatorio[3],
             'nota_professor': relatorio[4],
-            'parecer_professor': relatorio[5],
-            'nota_ccp': relatorio[6],
+            'nota_ccp': relatorio[5],
+            'parecer_professor': relatorio[6],
             'parecer_ccp': relatorio[7],
             'aluno': relatorio[8],
             'orientador': relatorio[9] 

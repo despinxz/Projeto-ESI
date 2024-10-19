@@ -1,5 +1,3 @@
-
-
 CREATE TYPE nota AS ENUM ('Aguardando', 'Adequado', 'Adequado com ressalvas', 'Insatisfatório');
 
 CREATE TABLE ccp (

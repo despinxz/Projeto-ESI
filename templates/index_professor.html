@@ -12,18 +12,20 @@
 
 <body>
     <div class="container">
-        <h2 class="mt-5">Relatórios enviados</h2>
+        <h2 class="mt-5">Relatórios recebidos</h2>
         
         <div id="tabelaRelatorios" class="mt-5">
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>Aluno</th>
                         <th>Data de envio</th>
                         <th>Título</th>
                         <th>Nota do Professor</th>
                         <th>Nota da CCP</th>
                     </tr>
                     <tr>
+                        <th><input type="text" placeholder="Filtrar Aluno" /></th>
                         <th><input type="text" placeholder="Filtrar Data" /></th>
                         <th><input type="text" placeholder="Filtrar Título" /></th>
                         <th><input type="text" placeholder="Filtrar Nota Professor" /></th>
@@ -38,9 +40,9 @@
     </div>
 
     <script>
-        const nusp_aluno = "{{ nusp_aluno }}";
+        const nusp_professor = "{{ nusp_professor }}";
 
-        fetch(`/relatorios/${nusp_aluno}`)
+        fetch(`/relatorios/${nusp_professor}`)
             .then(response => response.json())
             .then(data => {
                 const tabelaBody = document.getElementById('tabelaBody');
@@ -53,6 +55,7 @@
                     const row = document.createElement('tr');
 
                     row.innerHTML = `
+                        <td>${relatorio.aluno}</td>
                         <td>${new Date(relatorio.data_envio).toLocaleDateString()}</td>
                         <td>${relatorio.titulo}</td>
                         <td>${relatorio.nota_professor}</td>
