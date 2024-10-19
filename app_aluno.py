@@ -22,5 +22,9 @@ def get_detalhes_relatorio(relatorio_id):
     results = conn_bd.busca_relatorio(where='id', value=relatorio_id)
     return results
 
+@app.route('/form_relatorio/')
+def form_aluno():
+    return render_template('formulario_relatorio_aluno.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Relatório</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <style>
+        body{
+            box-sizing: border-box;
+            font-family: sans-serif;
+            input[type=radio] {
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    display: inline-block;
+                    cursor: pointer;
+
+                    border-radius: 50%;
+                    width: 16px;
+                    height: 16px;
+
+                    border: 2px solid #999;
+                    transition: 0.1s all linear;
+                    margin-right: 5px;
+
+                    position: relative;
+                    top: 4px;
+                    }
+                    input:checked {
+                    border: 6px solid #535353;
+                    outline: unset !important /* I added this one for Edge (chromium) support */
+                }
+        }
+
+        header{
+            min-height: 3rem;
+            background-color: #D9D9D9;
+
+            ul{
+                list-style-type: none;
+                a{
+                    text-decoration: none;
+                    color:#000;
+                    padding:0;
+                    background-color: red;
+                }
+                a:hover{
+                    color: #000;
+                    text-decoration: none;
+                }
+                li{
+                        padding: 1rem;
+                        display: inline-block;
+                        margin: 0 0.5rem;
+                        cursor: pointer;
+                        transition: 0.1s;
+                }
+
+                li:hover{
+                    background-color: #aaaaaa;
+                }
+            }
+        }
+
+        section{
+            min-height: 3rem;
+            margin: 0 2rem;
+            margin-top: 1.2rem;
+            padding: 0 1rem;
+            
+            button{
+                padding: 0.5rem 1rem;
+                border: 0;
+                background-color: #3E3E3E;
+                font-weight: bold;
+                color: #fff;
+                border-radius: 0.7rem;
+                font-size: 1.1rem;
+            }
+        }
+
+        .question{
+            p{
+                font-size: 1.2rem;
+                font-weight: bold;
+                margin-bottom: 0.2rem;
+            }
+
+            textarea{
+                width: 100%;
+                resize: none;
+                height: 6rem;
+                border-radius: 1rem;
+                border: solid 1px #909090;
+                scrollbar-width: none;
+                padding: 0.5rem;
+            }
+
+            form{
+                ul{
+                    list-style: none;
+                    li{
+                        display: inline-block;
+                        margin-right: 2rem;
+                    }
+                    label{
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+
+        .title{
+            border-bottom: solid 1px #000;
+            h1{
+                font-size: 2rem;
+                font-weight: bold;
+            }
+        }
+
+        .choice-table{
+            display: flex;
+            padding: 0.5rem 0;
+            .labels{
+                display: grid;
+                grid-template-rows: 25% 25% 25% 25%;
+                padding-right: 1rem;
+                border-right: solid 1px #000;
+                row-gap: 0.5rem;
+
+                p{
+                    text-align: right;
+                }
+            }
+
+            .awnsers{
+                flex: 1;
+                display: grid;
+                grid-template-columns: 25% 25% 25% 25%;
+                grid-template-rows: 25% 25% 25% 25%;
+                p{
+                    text-align: center;
+                }
+                input[type=radio]{
+                    margin: 0 calc(50% - 8px);
+                }
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <ul>
+            <li>
+                Feedbacks
+            </li>
+            <li>
+                Enviar Relatório
+            </li>
+        </ul>
+    </header>
+    <section class="title">
+        <h1>
+            Relatório Semestral de Aluno Regular
+        </h1>
+    </section>
+    <section class="question">
+        <p>
+            Referente à produção de artigos durante o curso
+        </p>
+        <div class="choice-table" >
+            <div class="labels">
+                <p>Quantidade</p>
+                <p>Artigos em fase de escrita</p>
+                <p>Artigos submetidos e em avaliação</p>
+                <p>Artigos aceitos ou publicados</p>
+            </div>
+            <div class="awnsers">
+                <p>0</p>
+                <p>1</p>
+                <p>2</p>
+                <p>3 ou mais</p>
+                <input type="radio" name="escrita" id="esc-0">
+                <input type="radio" name="escrita" id="esc-1">
+                <input type="radio" name="escrita" id="esc-2">
+                <input type="radio" name="escrita" id="esc-3">
+                <input type="radio" name="aval" id="aval-0">
+                <input type="radio" name="aval" id="aval-1">
+                <input type="radio" name="aval" id="aval-2">
+                <input type="radio" name="aval" id="aval-3">
+                <input type="radio" name="publicados" id="publ-0">
+                <input type="radio" name="publicados" id="publ-1">
+                <input type="radio" name="publicados" id="publ-2">
+                <input type="radio" name="publicados" id="publ-3">
+            </div>
+        </div>
+    </section>
+    <section class="question">
+        <p>
+            Relate aqui as atividades ou eventos acadêmicos que você participou no semestre
+            <br>
+            (congresso, visita técnica, intercâmbio, estágio PAE, etc)
+        </p>
+        <textarea name="atividades_resp" id="atividades_resp"></textarea>
+    </section>
+    <section class="question">
+        <p>
+            Apresente um resumo das suas atividades de pesquisa até o momento e das atividades que ainda precisam ser desenvolvidas até a conclusão do seu curso:
+        </p>
+        <textarea name="pesquisas_resp" id="pesquisas_resp"></textarea>
+    </section>
+    <section class="question">
+        <p>
+            Você tem algo adicional a declarar para a CCP - PPgSI que considera importante para a sua avaliação?
+        </p>
+        <textarea name="obsercacoes_resp" id="obsercacoes_resp"></textarea>
+    </section>
+    <section class="question">
+        <p>
+            Você está enfrentando alguma dificuldade que precisa de apoio da coordenação do curso?
+        </p>
+        <form action="">
+            <ul>
+                <li>
+                    <input type="radio" name="dificuldade" id="diff_sim">
+                    <label for="dificuldade_sim">Sim</label>
+                </li>
+                <li>
+                    <input type="radio" name="dificuldade" id="diff_nao">
+                    <label for="dificuldade_nao">Não</label>
+                </li>
+            </ul>
+        </form>
+    </section>
+    <section>
+        <button>
+            Enviar relatório
+        </button>
+    </section>
+</body>
