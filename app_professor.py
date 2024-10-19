@@ -22,5 +22,9 @@ def get_detalhes_relatorio(relatorio_id):
     results = conn_bd.busca_relatorio(where='id', value=relatorio_id)
     return results
 
+@app.route('/feedback')
+def feedback():
+    return render_template('feedback.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
