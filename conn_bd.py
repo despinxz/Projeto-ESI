@@ -11,7 +11,7 @@ def get_db_conn():
         host='localhost',
         database='posgraduacao',
         user='postgres',
-        password='admin'
+        password='1234'
     )
     return conn
 
