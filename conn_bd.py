@@ -15,6 +15,7 @@ def get_db_conn():
         user='postgres',
         password='bd'
     )
+    
     return conn
 
 def busca_aluno(where=None, value=None):
