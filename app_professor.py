@@ -22,9 +22,16 @@ def get_detalhes_relatorio(relatorio_id):
     results = conn_bd.busca_relatorio(where='id', value=relatorio_id)
     return results
 
-@app.route('/feedback')
-def feedback():
-    return render_template('feedback.html')
+@app.route('/feedback/<nusp_aluno>', methods=['POST'])
+def get_detalhes_aluno(nusp_aluno):
+    detalhes_aluno = conn_bd.busca_detalhes_aluno(nusp_aluno)
+    
+    if detalhes_aluno:
+        return render_template('feedback.html', nusp_aluno=nusp_aluno)
+    else:
+        return "Aluno não encontrado", 404
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

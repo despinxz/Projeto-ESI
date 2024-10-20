@@ -31,3 +31,59 @@ VALUES ('Relatório teste 6', 'Texto para o sexto relatório de teste.', '2023-0
 -- Inserir relatórios para Pedro
 INSERT INTO relatorios (titulo, texto, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador) 
 VALUES ('Relatório teste 7', 'Texto para o sétimo relatório de teste.', '2023-04-25 14:00:00', 'Adequado com ressalvas', 'Adequado com ressalvas', 'Relatório 7 tem algumas ressalvas.', 'Parecer CCP com ressalvas.', 445566, 1);
+
+
+ALTER TABLE alunos
+ADD curso VARCHAR(50);
+
+UPDATE alunos
+SET curso='Mestrado'
+WHERE nome='Maria';
+
+UPDATE alunos
+SET curso='Mestrado'
+WHERE nome='Pedro';
+
+UPDATE alunos
+SET curso='Mestrado'
+WHERE nome='Ana';
+
+UPDATE alunos
+SET curso='Doutorado'
+WHERE nome='Carlos';
+
+UPDATE alunos
+SET curso='Doutorado'
+WHERE nome='João';
+
+ALTER TABLE alunos
+ADD lattes VARCHAR(500) NOT NULL
+DEFAULT 'https://lattes.com/fulano';
+
+UPDATE alunos
+SET lattes='https://lattes.com/maria'
+WHERE nome='Maria';
+
+UPDATE alunos
+SET lattes='https://lattes.com/carlos'
+WHERE nome='Carlos';
+
+UPDATE alunos
+SET lattes='https://lattes.com/pedro'
+WHERE nome='Pedro';
+
+UPDATE alunos
+SET lattes='https://lattes.com/joao'
+WHERE nome='João';
+
+UPDATE alunos
+SET lattes='https://lattes.com/ana'
+WHERE nome='Ana';
+
+ALTER TABLE alunos
+ADD aprovacoes INT NOT NULL
+DEFAULT 0;
+
+ALTER TABLE alunos
+ADD reprovacoes INT NOT NULL
+DEFAULT 0;

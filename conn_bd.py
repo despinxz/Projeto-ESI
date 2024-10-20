@@ -13,7 +13,7 @@ def get_db_conn():
         host='localhost',
         database='posgraduacao',
         user='postgres',
-        password='1234'
+        password='bd'
     )
     return conn
 
@@ -97,6 +97,52 @@ def busca_relatorio(where=None, value=None):
         })
     
     return jsonify({'relatorios': relatorios})
+
+def busca_detalhes_aluno(where=None, value=None):
+    query = """
+    SELECT 
+        a.nome, 
+        a.nusp, 
+        a.curso, 
+        a.lattes, 
+        a.aprovacoes, 
+        a.reprovacoes, 
+        r.atividades_academicas, 
+        r.resumo_pesquisa
+    FROM alunos a
+    LEFT JOIN relatorios r ON a.nusp = r.nusp
+    WHERE a.nusp = %s;
+    """
+
+    conn = get_db_conn()
+    cur = conn.cursor()
+
+    cur.execute(query)
+
+    result = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    # Caso o resultado seja None (nenhum aluno encontrado)
+    if result is None:
+        return None
+    
+    detalhes_aluno =[]
+
+    for detalhe_aluno in result:
+        detalhes_aluno.append({
+        'nome': detalhe_aluno[0],
+        'nusp': detalhe_aluno[1],
+        'curso': detalhe_aluno[2],
+        'lattes': detalhe_aluno[3],
+        'aprovacoes': detalhe_aluno[4],
+        'reprovacoes': detalhe_aluno[5],
+        'atividades_academicas': detalhe_aluno[6],
+        'resumo_pesquisa': detalhe_aluno[7]
+    })
+
+    return jsonify({'detalhes_aluno': detalhes_aluno})
 
 def inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados):
     """
