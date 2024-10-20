@@ -1,5 +1,7 @@
 from flask import jsonify
 import psycopg2
+import env
+
 
 def get_db_conn():
     """
@@ -8,10 +10,10 @@ def get_db_conn():
     :return: Objeto de conexão
     """
     conn = psycopg2.connect(
-        host='localhost',
-        database='posgraduacao',
-        user='postgres',
-        password='1234'
+        host=env.host,
+        database=env.database,
+        user=env.user,
+        password=env.password
     )
     return conn
 
