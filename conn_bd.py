@@ -1,6 +1,7 @@
 from flask import jsonify
 import psycopg2
 from datetime import datetime
+import env
 
 
 def get_db_conn():
@@ -10,12 +11,11 @@ def get_db_conn():
     :return: Objeto de conexão
     """
     conn = psycopg2.connect(
-        host='localhost',
-        database='posgraduacao',
-        user='postgres',
-        password='bd'
+        host=env.host,
+        database=env.database,
+        user=env.user,
+        password=env.password
     )
-    
     return conn
 
 def busca_aluno(where=None, value=None):
@@ -101,19 +101,10 @@ def busca_relatorio(where=None, value=None):
 
 def busca_detalhes_aluno(where=None, value=None):
     query = """
-    SELECT 
-        a.nome, 
-        a.nusp, 
-        a.curso, 
-        a.lattes, 
-        a.aprovacoes, 
-        a.reprovacoes, 
-        r.atividades_academicas, 
-        r.resumo_pesquisa
-    FROM alunos a
-    LEFT JOIN relatorios r ON a.nusp = r.nusp
-    WHERE a.nusp = %s;
-    """
+    SELECT a.nome, a.nusp, r.data_envio, a.curso, a.lattes, a.aprovacoes, a.reprovacoes, r.atividades_academicas, r.resumo_pesquisa 
+    FROM alunos a LEFT JOIN relatorios r ON a.nusp = r.aluno"""
+    if where: 
+        query += f" WHERE a.nusp = {value}"
 
     conn = get_db_conn()
     cur = conn.cursor()
@@ -135,15 +126,39 @@ def busca_detalhes_aluno(where=None, value=None):
         detalhes_aluno.append({
         'nome': detalhe_aluno[0],
         'nusp': detalhe_aluno[1],
-        'curso': detalhe_aluno[2],
-        'lattes': detalhe_aluno[3],
-        'aprovacoes': detalhe_aluno[4],
-        'reprovacoes': detalhe_aluno[5],
-        'atividades_academicas': detalhe_aluno[6],
-        'resumo_pesquisa': detalhe_aluno[7]
+        'data_envio': detalhe_aluno[2],
+        'curso': detalhe_aluno[3],
+        'lattes': detalhe_aluno[4],
+        'aprovacoes': detalhe_aluno[5],
+        'reprovacoes': detalhe_aluno[6],
+        'atividades_academicas': detalhe_aluno[7],
+        'resumo_pesquisa': detalhe_aluno[8]
     })
 
-    return jsonify({'detalhes_aluno': detalhes_aluno})
+    return (detalhes_aluno)
+
+def salvar_parecer_prof(nusp_aluno, parecer, nivel):
+    query = """
+        UPDATE relatorios
+        SET parecer_professor = %s, nota_professor = %s
+        WHERE aluno = %s
+        """
+    
+    conn = get_db_conn()
+    cur = conn.cursor()
+
+    try:
+        cur.execute(query, (parecer,nivel,nusp_aluno))
+        conn.commit()
+
+    except psycopg2.Error as e:
+        print(f"Erro ao inserir parecer: {e}")
+        return False
+
+    cur.close()
+    conn.close()
+
+    return True
 
 def inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados):
     """
