@@ -1,97 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar Relatórios</title>
+    <title>Menu de Opções</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-option {
+            width: 200px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
-        <h2 class="mt-5">Relatórios recebidos</h2>
-        
-        <div id="tabelaRelatorios" class="mt-5">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Aluno</th>
-                        <th>Data de envio</th>
-                        <th>Título</th>
-                        <th>Nota do Professor</th>
-                        <th>Nota da CCP</th>
-                    </tr>
-                    <tr>
-                        <th><input type="text" placeholder="Filtrar Aluno" /></th>
-                        <th><input type="text" placeholder="Filtrar Data" /></th>
-                        <th><input type="text" placeholder="Filtrar Título" /></th>
-                        <th><input type="text" placeholder="Filtrar Nota Professor" /></th>
-                        <th><input type="text" placeholder="Filtrar Nota CCP" /></th>
-                    </tr>
-                </thead>
-                <tbody id="tabelaBody">
-                </tbody>
-            </table>
+        <div class="content">
+            <h2>Programa de Pós-Graduação - Tela Orientador</h2>
+            <div class="button-container">
+                <button class="btn btn-secondary btn-option" id="btnRelatoriosRecebidos">Relatórios Recebidos</button>
+                <button class="btn btn-info btn-option" id="btnDados">Dados</button>
+                <button class="btn btn-danger btn-option" id="btnSair">Sair</button>
+            </div>
         </div>
-
     </div>
 
     <script>
-        const nusp_professor = "{{ nusp_professor }}";
+        // Extrai o ID da URL atual
+        const urlPath = window.location.pathname;
+        const nusp = urlPath.split('/').pop();  // Último segmento da URL
 
-        fetch(`/relatorios/${nusp_professor}`)
-            .then(response => response.json())
-            .then(data => {
-                const tabelaBody = document.getElementById('tabelaBody');
-                
-                // Limpa a tabela antes de inserir novos dados
-                tabelaBody.innerHTML = '';
+        // Adiciona o `relatorio_id` nas rotas dos botões
+        document.getElementById("btnRelatoriosRecebidos").addEventListener("click", function() {
+            window.location.href = `/tabela_relatorios/${nusp}`;
+        });
 
-                // Itera sobre os relatórios retornados e cria as linhas da tabela
-                data.relatorios.forEach(relatorio => {
-                    const row = document.createElement('tr');
-
-                    row.innerHTML = `
-                        <td>${relatorio.aluno}</td>
-                        <td>${new Date(relatorio.data_envio).toLocaleDateString()}</td>
-                        <td>${relatorio.titulo}</td>
-                        <td>${relatorio.nota_professor}</td>
-                        <td>${relatorio.nota_ccp}</td>
-                    `;
-
-                    row.addEventListener('click', function() {
-                        window.location.href = `/relatorio/${relatorio.id}`;
-                    });
-
-                    tabelaBody.appendChild(row);
-                });
-
-                $('#tabelaRelatorios table').DataTable({
-                    "order": [[0, "desc"]], // Ordena por data de envio (descendente)
-                    "paging": true, // Habilita paginação
-                    "searching": true, // Habilita o campo de busca
-                    "info": true // Exibe informações de paginação
-                });
-
-                $('#tabelaRelatorios table').DataTable().columns().every(function () {
-                    var that = this;
-
-                    $('input', this.header()).on('keyup change', function () {
-                        if (that.search() !== this.value) {
-                            that.search(this.value).draw();
-                        }
-                    });
-                });
-            })
-            .catch(error => {
-                console.error('Erro ao buscar relatórios:', error);
-            });
     </script>
 
     <!-- Bootstrap JS Bundle (inclui Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

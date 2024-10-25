@@ -51,6 +51,11 @@
             color: red;
             font-weight: bold;
         }
+
+        #feedbackButton {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -67,7 +72,6 @@
                 
                 <h4>Resumo da pesquisa</h4>
                 <p id="resumo_pesquisa">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet turpis pellentesque, feugiat neque eget, facilisis sapien.</p>
-
             </div>
 
             <!-- Seção da direita (Notas e Pareceres) -->
@@ -81,6 +85,9 @@
                 <p id="parecer_ccp">Carregando...</p>            
             </div>
         </div>
+        
+        <!-- Botão Enviar Feedback -->
+        <button id="feedbackButton" class="btn btn-primary">Enviar feedback</button>
     </div>
 
     <script>
@@ -119,6 +126,15 @@
                 // Define a cor da nota com base no status
                 setNotaClass(notaProfessorEl, relatorio.nota_professor);
                 setNotaClass(notaCCPEl, relatorio.nota_ccp);
+
+                // Exibe o botão "Enviar feedback" se a nota_professor for "Aguardando"
+                if (relatorio.nota_ccp === "Aguardando") {
+                    const feedbackButton = document.getElementById('feedbackButton');
+                    feedbackButton.style.display = 'block';
+                    feedbackButton.addEventListener('click', () => {
+                        window.location.href = `/feedback_ccp/${relatorio.aluno}`;
+                    });
+                }
             });
     </script>
 

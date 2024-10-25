@@ -94,10 +94,97 @@ def busca_relatorio(where=None, value=None):
             'parecer_professor': relatorio[6],
             'parecer_ccp': relatorio[7],
             'aluno': relatorio[8],
-            'orientador': relatorio[9] 
+            'orientador': relatorio[9],
+            'atividades_academicas': relatorio[10],
+            'resumo_pesquisa': relatorio[11]
         })
     
     return jsonify({'relatorios': relatorios})
+
+def busca_detalhes_aluno(where=None, value=None):
+    query = """
+    SELECT a.nome, a.nusp, r.data_envio, a.curso, a.lattes, a.aprovacoes, a.reprovacoes, r.parecer_professor, r.atividades_academicas, r.resumo_pesquisa 
+    FROM alunos a LEFT JOIN relatorios r ON a.nusp = r.aluno"""
+    if where: 
+        query += f" WHERE a.nusp = {value}"
+
+    conn = get_db_conn()
+    cur = conn.cursor()
+
+    cur.execute(query)
+
+    result = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    # Caso o resultado seja None (nenhum aluno encontrado)
+    if result is None:
+        return None
+    
+    detalhes_aluno =[]
+
+    for detalhe_aluno in result:
+        detalhes_aluno.append({
+        'nome': detalhe_aluno[0],
+        'nusp': detalhe_aluno[1],
+        'data_envio': detalhe_aluno[2],
+        'curso': detalhe_aluno[3],
+        'lattes': detalhe_aluno[4],
+        'aprovacoes': detalhe_aluno[5],
+        'reprovacoes': detalhe_aluno[6],
+        'parecer_professor': detalhe_aluno[7],
+        'atividades_academicas': detalhe_aluno[8],
+        'resumo_pesquisa': detalhe_aluno[9]
+    })
+
+    return (detalhes_aluno)
+
+def salvar_parecer_prof(nusp_aluno, parecer, nivel):
+    query = """
+        UPDATE relatorios
+        SET parecer_professor = %s, nota_professor = %s
+        WHERE aluno = %s
+        """
+    
+    conn = get_db_conn()
+    cur = conn.cursor()
+
+    try:
+        cur.execute(query, (parecer,nivel,nusp_aluno))
+        conn.commit()
+
+    except psycopg2.Error as e:
+        print(f"Erro ao inserir parecer: {e}")
+        return False
+
+    cur.close()
+    conn.close()
+
+    return True
+
+def salvar_parecer_ccp(nusp_aluno, parecer, nivel):
+    query = """
+        UPDATE relatorios
+        SET parecer_ccp = %s, nota_ccp = %s
+        WHERE aluno = %s
+        """
+    
+    conn = get_db_conn()
+    cur = conn.cursor()
+
+    try:
+        cur.execute(query, (parecer,nivel,nusp_aluno))
+        conn.commit()
+
+    except psycopg2.Error as e:
+        print(f"Erro ao inserir parecer: {e}")
+        return False
+
+    cur.close()
+    conn.close()
+
+    return True
 
 def inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados):
     """

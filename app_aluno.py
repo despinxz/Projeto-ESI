@@ -8,9 +8,17 @@ app = Flask(__name__)
 def index(nusp_aluno):
     return render_template('index_aluno.html', nusp_aluno=nusp_aluno)
 
+@app.route('/tabela_relatorios/<nusp_aluno>')
+def tabela_relatorios(nusp_aluno):
+    return render_template('tabela_relatorios_aluno.html', nusp_aluno=nusp_aluno)
+
 @app.route('/relatorio/<id>')
 def detalhes_relatorio(id):
     return render_template('detalhes_relatorio_aluno.html', relatorio_id=id)
+
+@app.route('/formulario/<nusp_aluno>')
+def render_forms_relatorio(nusp_aluno):
+    return render_template('formulario_relatorio_aluno.html', nusp_aluno=nusp_aluno)
 
 @app.route('/relatorios/<nusp_aluno>', methods=['GET'])
 def get_relatorios_aluno(nusp_aluno):
