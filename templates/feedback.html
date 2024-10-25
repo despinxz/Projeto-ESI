@@ -298,7 +298,7 @@
 
         // Função para buscar os detalhes do aluno
         function fetchDetalhesAluno() {
-            etch(`/feedback/${nusp_aluno}`)
+            fetch(`/feedback/${nusp_aluno}`)
             .then(response => response.json())
             .then(data => {
                 const detalhes = data.detalhes_aluno[0];
