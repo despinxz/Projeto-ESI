@@ -36,9 +36,9 @@ CREATE TABLE relatorios (
   parecer_ccp VARCHAR(1000),
   aluno INT NOT NULL,
   orientador INT NOT NULL, 
-  escrita CHAR(1) NOT NULL,
-  aval CHAR(1) NOT NULL,
-  publicados CHAR(1) NOT NULL,
+  escrita VARCHAR(3) NOT NULL,
+  aval VARCHAR(3) NOT NULL,
+  publicados VARCHAR(3) NOT NULL,
 
 
 

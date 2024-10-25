@@ -160,22 +160,27 @@ def inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_r
     """
     query = """
     INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
 
     conn = get_db_conn()
     cur = conn.cursor()
 
     dados_aluno = busca_aluno(where='nusp', value=nusp_aluno)
-    orientador = dados_aluno[0]['orientador'] if dados_aluno else None
+    orientador = 1
 
     data_envio = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    escrita = escrita.split('-')[-1]
-    aval = aval.split('-')[-1]
-    publicados = publicados.split('-')[-1]
+    escrita = str(escrita.split('-')[-1])
+    aval = str(aval.split('-')[-1])
+    publicados = str(publicados.split('-')[-1])
 
-    cur.execute(query, (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, "Aguardando", "Aguardando", "Aguardando", "Aguardando", nusp_aluno, orientador, escrita, aval, publicados))
+    if dificuldade == 'diff_sim':
+        dificuldade = 'Sim'
+    else:
+        dificuldade = 'Não'
+
+    cur.execute(query, (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, "Aguardando", "Aguardando", "Parecer ainda não enviado", "Parecer ainda não enviado", nusp_aluno, orientador, escrita, aval, publicados))
 
     conn.commit()
     cur.close()

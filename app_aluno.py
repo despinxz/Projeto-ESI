@@ -35,7 +35,7 @@ def forms_relatorio(nusp_aluno):
     if request.method == 'POST':
         dados = request.json
 
-        titulo = dados.get('titulo')
+        titulo = "Titulo"
         atividades_resp = dados.get('atividades_resp')
         pesquisas_resp = dados.get('pesquisas_resp')
         observacoes_resp = dados.get('observacoes_resp')

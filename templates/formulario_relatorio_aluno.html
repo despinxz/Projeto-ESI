@@ -251,8 +251,7 @@
             const atividades_resp = document.getElementById('atividades_resp').value.trim();
             const pesquisas_resp = document.getElementById('pesquisas_resp').value.trim();
             const observacoes_resp = document.getElementById('obsercacoes_resp').value.trim();
-            const dificuldade = document.querySelector('input[name="dificuldade"]:checked') ? 
-                               document.querySelector('input[name="dificuldade"]:checked').id : null;
+            const dificuldade = document.querySelector('input[name="dificuldade"]:checked');
             const escrita = document.querySelector('input[name="escrita"]:checked');
             const aval = document.querySelector('input[name="aval"]:checked');
             const publicados = document.querySelector('input[name="publicados"]:checked');
@@ -263,12 +262,11 @@
             }
             
             const dadosRelatorio = {
-                titulo,
                 nusp_aluno,
                 atividades_resp,
                 pesquisas_resp,
                 observacoes_resp,
-                dificuldade,
+                dificuldade: dificuldade.id,
                 escrita: escrita.id,
                 aval: aval.id,
                 publicados: publicados.id
