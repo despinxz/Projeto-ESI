@@ -237,7 +237,7 @@
                 Atividades Acadêmicas
             </p>
             <p id= ativ_acad> 
-                {{ atividades_academicas }}               
+                {{ atividades_resp }}               
             </p>
         </div>
         <div>
@@ -245,7 +245,7 @@
                 Resumo da Pesquisa
             </p>
             <p id="rem_pesquisa">
-                {{ resumo_pesquisa }}
+                {{ observacoes_resp }}
             </p>
         </div>
     </section>
@@ -285,25 +285,28 @@
     </section>
 
     <script>
-        const nusp_aluno = "{{ nusp_aluno }}";  
+        const relatorio_id = "{{ relatorio_id }}";  
+        const alunoDetalhes = {
+            nome: "{{ nome }}",
+            nusp: "{{ nusp_aluno }}",
+            data_envio: "{{ data_envio }}",
+            curso: "{{ curso }}",
+            lattes: "{{ lattes }}",
+            aprovacoes: "{{ aprovacoes }}",
+            reprovacoes: "{{ reprovacoes }}",
+            atividades_resp: "{{ atividades_resp }}",
+            observacoes_resp: "{{ observacoes_resp }}"
+        }
 
-        // Função para buscar os detalhes do aluno
-        function fetchDetalhesAluno() {
-            etch(`/feedback_professor/${nusp_aluno}`)
-            .then(response => response.json())
-            .then(data => {
-                const detalhes = data.detalhes_aluno[0];
-                document.getElementById('nome_aluno').textContent = detalhes.nome;
-                document.getElementById('nusp').textContent = detalhes.nusp;
-                document.getElementById('data_envio').textContent = detalhes.data_envio;
-                document.getElementById('curso').textContent = detalhes.curso;
-                document.getElementById('link_lattes').textContent = detalhes.lattes;
-                document.getElementById('aprovacoes').textContent = detalhes.aprovacoes;
-                document.getElementById('reprovacoes').textContent = detalhes.reprovacoes;
-                document.getElementById('ativ_acad').textContent = detalhes.atividades_academicas;
-                document.getElementById('rem_pesquisa').textContent = detalhes.resumo_pesquisa;
-            })
-            .catch(error => console.error('Erro ao buscar dados do aluno:', error));
+        function displayDetalhesAluno() {
+            document.getElementById('nome_aluno').textContent = alunoDetalhes.nome + ' - ' + alunoDetalhes.nusp; // Concatenando nome e NUSP
+            document.getElementById('data_envio').innerHTML = `<b>${alunoDetalhes.data_envio}</b>`; // Formatação do HTML
+            document.getElementById('curso').textContent = alunoDetalhes.curso;
+            document.getElementById('link_lattes').textContent = alunoDetalhes.lattes;
+            document.getElementById('aprovacoes').textContent = alunoDetalhes.aprovacoes;
+            document.getElementById('reprovacoes').textContent = alunoDetalhes.reprovacoes;
+            document.getElementById('ativ_acad').textContent = alunoDetalhes.atividades_resp; // Corrigido para o ID correto
+            document.getElementById('rem_pesquisa').textContent = alunoDetalhes.observacoes_resp; // Corrigido para o ID correto
         }
 
         document.getElementById('enviar_parecer').addEventListener('click', () => {

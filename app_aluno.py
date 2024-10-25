@@ -35,6 +35,7 @@ def forms_relatorio(nusp_aluno):
     if request.method == 'POST':
         dados = request.json
 
+        titulo = dados.get('titulo')
         atividades_resp = dados.get('atividades_resp')
         pesquisas_resp = dados.get('pesquisas_resp')
         observacoes_resp = dados.get('observacoes_resp')
@@ -43,7 +44,7 @@ def forms_relatorio(nusp_aluno):
         aval = dados.get('aval')
         publicados = dados.get('publicados')
 
-        return conn_bd.inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados)
+        return conn_bd.inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados, titulo)
 
     return render_template('formulario_relatorio_aluno.html', nusp_aluno=nusp_aluno)
 
