@@ -18,6 +18,126 @@ def get_db_conn():
     )
     return conn
 
+def get_nome_curso(curso):
+    """
+    Retorna o nome do curso a partir do seu ID.
+
+    :param curso: ID do curso
+    :return: Nome do curso
+    """
+    query = f"""
+        SELECT nome_curso
+        FROM cursos
+        WHERE id = {curso}
+    """
+
+    conn = get_db_conn()
+    cur = conn.cursor()
+    cur.execute(query)
+
+    result = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    dados = []
+
+    for dados in result:
+        dados.append({
+            'nome_curso': dados[0]
+        })
+    
+    return jsonify({'dados': dados})
+
+
+def num_materias_reprovadas(nusp_aluno, curso):
+    """
+    Retorna o número de matérias reprovadas por um aluno em um curso.
+
+    :param nusp_aluno: NUSP do aluno
+    :param curso: Curso do aluno
+    :return: Número de matérias reprovadas
+    """
+
+    query = f"""
+        SELECT 
+        COUNT(DISTINCT cursos_disciplinas_reprovadas.id_disciplina) AS disciplinas_reprovadas
+        FROM 
+        alunos
+        JOIN 
+        cursos ON cursos.aluno = alunos.nusp
+        JOIN 
+        cursos_disciplinas_reprovadas ON cursos.id = cursos_disciplinas_reprovadas.id_curso
+        WHERE 
+        alunos.nusp = {nusp_aluno}
+        AND cursos.id = {curso}
+        GROUP BY 
+        alunos.nusp, cursos.id;
+    """
+
+    conn = get_db_conn()
+    cur = conn.cursor()
+    cur.execute(query)
+
+    result = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    # refatorar depois
+    dados = []
+
+    for dados in result:
+        dados.append({
+            'disciplinas_reprovadas': dados[0]
+        })
+    
+    return jsonify({'dados': dados})
+
+def num_materias_aprovadas(nusp_aluno, curso):
+    """
+    Retorna o número de matérias aprovadas por um aluno em um curso.
+
+    :param nusp_aluno: NUSP do aluno
+    :param curso: Curso do aluno
+    :return: Número de matérias aprovadas
+    """
+
+    query = f"""
+        SELECT 
+        COUNT(DISTINCT cursos_disciplinas_aprovadas.id_disciplina) AS disciplinas_aprovadas
+        FROM 
+        alunos
+        JOIN 
+        cursos ON cursos.aluno = alunos.nusp
+        JOIN 
+        cursos_disciplinas_aprovadas ON cursos.id = cursos_disciplinas_aprovadas.id_curso
+        WHERE 
+        alunos.nusp = {nusp_aluno}
+        AND cursos.id = {curso}
+        GROUP BY 
+        alunos.nusp, cursos.id;
+    """
+
+    conn = get_db_conn()
+    cur = conn.cursor()
+    cur.execute(query)
+
+    result = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    # refatorar depois
+    dados = []
+
+    for dados in result:
+        dados.append({
+            'disciplinas_aprovadas': dados[0]
+        })
+    
+    return jsonify({'dados': dados})
+
 def busca_aluno(where=None, value=None):
     """
     Realiza busca na tabela de aluno, podendo ter filtros ou não.
