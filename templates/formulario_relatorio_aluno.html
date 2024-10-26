@@ -33,7 +33,13 @@
                     input:checked {
                     border: 6px solid #535353;
                     outline: unset !important /* I added this one for Edge (chromium) support */
-                }
+                };
+            input[type=date] {
+                    padding: 2px 8px;
+                    border-radius: 1rem;
+                    border: solid 1px #909090;
+                    color: #909090;
+            }
         }
 
         header{
@@ -204,7 +210,7 @@
         <p>
             Data da última atualização do lattes:
         </p>
-        <textarea name="data_atual_lattes_resp" id="data_atual_lattes_resp"></textarea>
+        <input type="date" name="data_atual_lattes_resp" id="data_atual_lattes_resp">
     </section>
     <section class="question">
         <p>
