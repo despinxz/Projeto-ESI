@@ -48,7 +48,8 @@
 
         // Adiciona o `relatorio_id` nas rotas dos botões
         document.getElementById("btnRelatoriosRecebidos").addEventListener("click", function() {
-            window.location.href = `/tabela_relatorios`;
+            const url = "{{ url_for('cpp.tabela_relatorios') }}"
+            window.location.href = url;
         });
 
     </script>

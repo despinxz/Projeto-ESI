@@ -1,6 +1,6 @@
-const nusp_aluno = "{{ nusp_aluno }}";
+const nusp = "{{ nusp }}";
 
-fetch(`/dados/${nusp_aluno}`)
+fetch(`/dados/${nusp}`)
     .then(response => response.json())
     .then(data => {
         const tabelaBody = document.getElementById('tabelaBody');
@@ -42,9 +42,11 @@ fetch(`/dados/${nusp_aluno}`)
                 // Dificuldade ou nao  
 
             `;
+            
+            const url = "{{ url_for('aluno.detalhes_relatorio', relatorio_id='') }}" + dado.id
 
             row.addEventListener('click', function() {
-                window.location.href = `/relatorio/${dado.id}`;
+                window.location.href = url;
             });
 
             tabelaBody.appendChild(row);

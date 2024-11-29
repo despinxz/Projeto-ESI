@@ -132,7 +132,8 @@
                     const feedbackButton = document.getElementById('feedbackButton');
                     feedbackButton.style.display = 'block';
                     feedbackButton.addEventListener('click', () => {
-                        window.location.href = `/feedback_professor/${relatorio.aluno}`;
+                        const url = "{{ url_for('professor.get_detalhes_aluno', nusp_aluno='') }}" + relatorio.aluno
+                        window.location.href = url;
                     });
                 }
             });

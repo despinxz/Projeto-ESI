@@ -51,11 +51,11 @@ def get_nome_curso(curso):
     return jsonify({'dados': dados})
 
 
-def num_materias_reprovadas(nusp_aluno, curso):
+def num_materias_reprovadas(nusp, curso):
     """
     Retorna o número de matérias reprovadas por um aluno em um curso.
 
-    :param nusp_aluno: NUSP do aluno
+    :param nusp: NUSP do aluno
     :param curso: Curso do aluno
     :return: Número de matérias reprovadas
     """
@@ -70,7 +70,7 @@ def num_materias_reprovadas(nusp_aluno, curso):
         JOIN 
         cursos_disciplinas_reprovadas ON cursos.id = cursos_disciplinas_reprovadas.id_curso
         WHERE 
-        alunos.nusp = {nusp_aluno}
+        alunos.nusp = {nusp}
         AND cursos.id = {curso}
         GROUP BY 
         alunos.nusp, cursos.id;
@@ -95,11 +95,11 @@ def num_materias_reprovadas(nusp_aluno, curso):
     
     return jsonify({'dados': dados})
 
-def num_materias_aprovadas(nusp_aluno, curso):
+def num_materias_aprovadas(nusp, curso):
     """
     Retorna o número de matérias aprovadas por um aluno em um curso.
 
-    :param nusp_aluno: NUSP do aluno
+    :param nusp: NUSP do aluno
     :param curso: Curso do aluno
     :return: Número de matérias aprovadas
     """
@@ -114,7 +114,7 @@ def num_materias_aprovadas(nusp_aluno, curso):
         JOIN 
         cursos_disciplinas_aprovadas ON cursos.id = cursos_disciplinas_aprovadas.id_curso
         WHERE 
-        alunos.nusp = {nusp_aluno}
+        alunos.nusp = {nusp}
         AND cursos.id = {curso}
         GROUP BY 
         alunos.nusp, cursos.id;
@@ -260,7 +260,7 @@ def busca_detalhes_aluno(where=None, value=None):
 
     return (detalhes_aluno)
 
-def salvar_parecer_prof(nusp_aluno, parecer, nivel):
+def salvar_parecer_prof(nusp, parecer, nivel):
     query = """
         UPDATE relatorios
         SET parecer_professor = %s, nota_professor = %s
@@ -271,7 +271,7 @@ def salvar_parecer_prof(nusp_aluno, parecer, nivel):
     cur = conn.cursor()
 
     try:
-        cur.execute(query, (parecer,nivel,nusp_aluno))
+        cur.execute(query, (parecer,nivel,nusp))
         conn.commit()
 
     except psycopg2.Error as e:
@@ -283,7 +283,7 @@ def salvar_parecer_prof(nusp_aluno, parecer, nivel):
 
     return True
 
-def salvar_parecer_ccp(nusp_aluno, parecer, nivel):
+def salvar_parecer_ccp(nusp, parecer, nivel):
     query = """
         UPDATE relatorios
         SET parecer_ccp = %s, nota_ccp = %s
@@ -294,7 +294,7 @@ def salvar_parecer_ccp(nusp_aluno, parecer, nivel):
     cur = conn.cursor()
 
     try:
-        cur.execute(query, (parecer,nivel,nusp_aluno))
+        cur.execute(query, (parecer,nivel,nusp))
         conn.commit()
 
     except psycopg2.Error as e:
@@ -306,11 +306,11 @@ def salvar_parecer_ccp(nusp_aluno, parecer, nivel):
 
     return True
 
-def inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados, titulo):
+def inserir_relatorio(nusp, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados, titulo):
     """
     Insere um novo relatório no banco de dados.
 
-    :param nusp_aluno: NUSP do aluno
+    :param nusp: NUSP do aluno
     :param atividades_resp: Respostas sobre atividades
     :param pesquisas_resp: Respostas sobre pesquisas
     :param observacoes_resp: Observações adicionais
@@ -327,7 +327,7 @@ def inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_r
     conn = get_db_conn()
     cur = conn.cursor()
 
-    dados_aluno = busca_aluno(where='nusp', value=nusp_aluno)
+    dados_aluno = busca_aluno(where='nusp', value=nusp)
     orientador = 1
 
     data_envio = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -341,7 +341,7 @@ def inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_r
     else:
         dificuldade = 'Não'
 
-    cur.execute(query, (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, "Aguardando", "Aguardando", "Parecer ainda não enviado", "Parecer ainda não enviado", nusp_aluno, orientador, escrita, aval, publicados))
+    cur.execute(query, (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, "Aguardando", "Aguardando", "Parecer ainda não enviado", "Parecer ainda não enviado", nusp, orientador, escrita, aval, publicados))
 
     conn.commit()
     cur.close()

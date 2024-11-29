@@ -45,10 +45,11 @@
         // Extrai o ID da URL atual
         const urlPath = window.location.pathname;
         const nusp = urlPath.split('/').pop();  // Último segmento da URL
+        const url = "{{ url_for('professor.tabela_relatorios', nusp='') }}" + nusp;
 
         // Adiciona o `relatorio_id` nas rotas dos botões
         document.getElementById("btnRelatoriosRecebidos").addEventListener("click", function() {
-            window.location.href = `/tabela_relatorios/${nusp}`;
+            window.location.href = url;
         });
 
     </script>

@@ -1,5 +1,6 @@
-const nusp_aluno = "{{ nusp_aluno }}";
-    
+const nusp = "{{ nusp }}";
+const url = "{{ url_for('aluno.index', nusp='') }}" + nusp
+
 function enviarRelatorio(event) {
     event.preventDefault();
 
@@ -18,7 +19,7 @@ function enviarRelatorio(event) {
     }
     
     const dadosRelatorio = {
-        nusp_aluno,
+        nusp,
         atividades_resp,
         pesquisas_resp,
         observacoes_resp,
@@ -28,7 +29,7 @@ function enviarRelatorio(event) {
         publicados: publicados.id
     };
 
-    fetch(`/novo_relatorio/${nusp_aluno}`, {
+    fetch(`/novo_relatorio/${nusp}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -38,7 +39,7 @@ function enviarRelatorio(event) {
     .then(response => {
         if (response.ok) {
             alert('Relatório enviado com sucesso!');
-            window.location.href = `/${nusp_aluno}`; 
+            window.location.href = url; 
         } else {
             throw new Error('Erro ao enviar relatório');
         }

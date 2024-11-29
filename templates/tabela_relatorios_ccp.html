@@ -42,7 +42,7 @@
     </div>
 
     <script>
-        const nusp_professor = window.location.pathname.split('/').pop();
+        const nusp = window.location.pathname.split('/').pop();
 
         fetch(`/relatorios`)
             .then(response => response.json())
@@ -66,7 +66,8 @@
                     `;
 
                     row.addEventListener('click', function() {
-                        window.location.href = `/relatorio/${relatorio.id}`;
+                        const url = "{{ url_for('cpp.detalhes_relatorio', id='') }}" + relatorio.id
+                        window.location.href = url;
                     });
 
                     tabelaBody.appendChild(row);

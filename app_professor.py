@@ -1,34 +1,33 @@
-from flask import Flask, request, render_template, jsonify 
+from flask import Blueprint, request, render_template, jsonify
 import conn_bd
-import psycopg2 
 
-app = Flask(__name__)
+professor = Blueprint('professor', __name__, template_folder='templates')
 
-@app.route('/<nusp_professor>')
-def index(nusp_professor):
-    return render_template('index_professor.html', nusp_professor=nusp_professor)
+@professor.route('/<nusp>')
+def index(nusp):
+    return render_template('index_professor.html', nusp=nusp)
 
-@app.route('/tabela_relatorios/<nusp_professor>')
-def tabela_relatorios(nusp_professor):
-    return render_template('tabela_relatorios_professor.html', nusp_aluno=nusp_professor)
+@professor.route('/tabela_relatorios/<nusp>')
+def tabela_relatorios(nusp):
+    return render_template('tabela_relatorios_professor.html', nusp=nusp)
 
-@app.route('/relatorio/<id>')
+@professor.route('/relatorio/<id>')
 def detalhes_relatorio(id):
     return render_template('detalhes_relatorio_professor.html', relatorio_id=id)
 
-@app.route('/relatorios/<nusp_professor>', methods=['GET'])
-def get_relatorios_professor(nusp_professor):
-    results = conn_bd.busca_relatorio(where="orientador", value=nusp_professor)
+@professor.route('/relatorios/<nusp>', methods=['GET'])
+def get_relatorios_professor(nusp):
+    results = conn_bd.busca_relatorio(where="orientador", value=nusp)
     return results
 
-@app.route('/detalhes_relatorio/<relatorio_id>', methods=['GET'])
+@professor.route('/detalhes_relatorio/<relatorio_id>', methods=['GET'])
 def get_detalhes_relatorio(relatorio_id):
     results = conn_bd.busca_relatorio(where='id', value=relatorio_id)
     return results
 
-@app.route('/feedback_professor/<nusp_aluno>', methods=['GET'])
-def get_detalhes_aluno(nusp_aluno):
-    detalhes_aluno = conn_bd.busca_detalhes_aluno(where="nusp", value=nusp_aluno)
+@professor.route('/feedback_professor/<nusp>', methods=['GET'])
+def get_detalhes_aluno(nusp):
+    detalhes_aluno = conn_bd.busca_detalhes_aluno(where="nusp", value=nusp)
 
     if not detalhes_aluno:
         return jsonify({"error": "Aluno não encontrado"}), 404
@@ -36,7 +35,7 @@ def get_detalhes_aluno(nusp_aluno):
     aluno = detalhes_aluno[0]
 
     return render_template('feedback_professor.html',
-                           nusp_aluno=aluno['nusp'],
+                           nusp=aluno['nusp'],
                            nome=aluno['nome'],
                            data_envio=aluno['data_envio'],
                            curso=aluno['curso'],
@@ -46,8 +45,8 @@ def get_detalhes_aluno(nusp_aluno):
                            atividades_academicas=aluno['atividades_academicas'],
                            resumo_pesquisa=aluno['resumo_pesquisa'])
 
-@app.route('/feedback_professor/<nusp_aluno>/save', methods=['POST'])
-def salvar_parecer(nusp_aluno):
+@professor.route('/feedback_professor/<nusp>/save', methods=['POST'])
+def salvar_parecer(nusp):
     dados = request.get_json()
     parecer = dados.get('parecer_resp')
     nivel = dados.get('nivel')
@@ -55,10 +54,7 @@ def salvar_parecer(nusp_aluno):
     if not parecer or not nivel:
         return jsonify({"error": "Dados incompletos"}), 400
 
-    if conn_bd.salvar_parecer_prof(nusp_aluno, parecer, nivel):
+    if conn_bd.salvar_parecer_prof(nusp, parecer, nivel):
         return jsonify({"sucesso": True, "mensagem": "Parecer salvo com sucesso!"}), 200
     else:
         return jsonify({"error": "Erro ao salvar parecer"}), 500
-
-if __name__ == '__main__':
-    app.run(debug=True)

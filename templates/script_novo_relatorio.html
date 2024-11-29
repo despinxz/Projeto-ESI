@@ -1,7 +1,7 @@
 <script>
-    const nusp_aluno = "{{ nusp_aluno }}";
+    const nusp = "{{ nusp }}";
 
-    fetch(`/dados/${nusp_aluno}`)
+    fetch(`/dados/${nusp}`)
         .then(response => response.json())
         .then(data => {
             const tabelaBody = document.getElementById('tabelaBody');
