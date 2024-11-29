@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form action="/login" method="POST">
+        <label for="tipo">Tipo de Usuário:</label>
+        <select name="tipo" id="tipo" required>
+            <option value="ccp">CCP</option>
+            <option value="aluno">Aluno</option>
+            <option value="professor">Professor</option>
+        </select><br>
+
+        <label for="nusp">Número USP:</label>
+        <input type="text" name="nusp" id="nusp" required><br>
+
+        <label for="senha">Senha:</label>
+        <input type="password" name="senha" id="senha" required><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+
+    <br>
+    <a href="/cadastro">Cadastrar-se</a>
+</body>
+</html>

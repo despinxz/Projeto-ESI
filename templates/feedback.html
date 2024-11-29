@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .rating {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+        }
+        .rating label {
+            cursor: pointer;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            resize: none;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 0.7rem;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Feedback</h1>
+    <form id="feedbackForm">
+        <div>
+            <p>1. Quão satisfeito está com nosso sistema?</p>
+            <div class="rating">
+                <label>
+                    <input type="radio" name="satisfaction" value="1" required> 1
+                </label>
+                <label>
+                    <input type="radio" name="satisfaction" value="2"> 2
+                </label>
+                <label>
+                    <input type="radio" name="satisfaction" value="3"> 3
+                </label>
+                <label>
+                    <input type="radio" name="satisfaction" value="4"> 4
+                </label>
+                <label>
+                    <input type="radio" name="satisfaction" value="5"> 5
+                </label>
+            </div>
+        </div>
+        <div>
+            <p>2. Nos conte um pouco mais sobre sua experiência:</p>
+            <textarea name="experience" id="experience" placeholder="Escreva aqui..." required></textarea>
+        </div>
+        <button type="submit">Enviar Feedback</button>
+    </form>
+
+    <script>
+        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const satisfaction = document.querySelector('input[name="satisfaction"]:checked').value;
+            const experience = document.getElementById('experience').value.trim();
+
+            if (!satisfaction || !experience) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            // Simula o envio do feedback (você pode integrar com o backend aqui)
+            console.log({
+                satisfaction,
+                experience
+            });
+
+            alert('Obrigado pelo seu feedback!');
+            
+            // Redireciona para a página index_aluno.html
+            const nusp_aluno = "{{ nusp_aluno }}";
+            window.location.href = `/${nusp_aluno}`;
+        });
+    </script>
+</body>
+</html>

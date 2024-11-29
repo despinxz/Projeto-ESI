@@ -1,7 +1,8 @@
-from flask import jsonify
+from flask import jsonify, flash
 import psycopg2
 from datetime import datetime
-import env
+import hashlib
+# import env
 
 
 def get_db_conn():
@@ -11,10 +12,10 @@ def get_db_conn():
     :return: Objeto de conexão
     """
     conn = psycopg2.connect(
-        host=env.host,
-        database=env.database,
-        user=env.user,
-        password=env.password
+        host='localhost',
+        database='posgraduacao',
+        user='postgres',
+        password='12345678'
     )
     return conn
 
@@ -167,17 +168,12 @@ def busca_aluno(where=None, value=None):
             'nusp': dados[0],
             'nome': dados[1],
             'email': dados[2],
-            'orientador': dados[3],
-            'lattes': dados[4],
-            'curso': dados[5],
-            'data_matricula': dados[6],
-            'disc_aprov': dados[7],
-            'disc_reprov': dados[8],
-            'data_exqualif': dados[9],
-            'data_exprof': dados[10],
-            'data_dissert': dados[11],
+            'data_nasc': dados[3],
+            'rg': dados[4],
+            'local_nasc': dados[5],
+            'nacionalidade': dados[6],
+            'lattes': dados[7]
         })
-    
     return jsonify({'dados_aluno': dados_aluno})
 
 def busca_relatorio(where=None, value=None):
@@ -207,16 +203,20 @@ def busca_relatorio(where=None, value=None):
         relatorios.append({
             'id': relatorio[0],
             'titulo': relatorio[1],
-            'texto': relatorio[2],
-            'data_envio': relatorio[3],
-            'nota_professor': relatorio[4],
-            'nota_ccp': relatorio[5],
-            'parecer_professor': relatorio[6],
-            'parecer_ccp': relatorio[7],
-            'aluno': relatorio[8],
-            'orientador': relatorio[9],
-            'atividades_academicas': relatorio[10],
-            'resumo_pesquisa': relatorio[11]
+            'atividades_resp': relatorio[2],
+            'pesquisas_resp': relatorio[3],
+            'observacoes_resp': relatorio[4],
+            'dificuldades': relatorio[5],
+            'data_envio': relatorio[6],
+            'nota_professor': relatorio[7],
+            'nota_ccp': relatorio[8],
+            'parecer_professor': relatorio[9],
+            'parecer_ccp': relatorio[10],
+            'aluno': relatorio[11],
+            'orientador': relatorio[12],
+            'escrita': relatorio[13],
+            'aval': relatorio[14],
+            'publicados': relatorio[15]
         })
     
     return jsonify({'relatorios': relatorios})
@@ -306,7 +306,7 @@ def salvar_parecer_ccp(nusp_aluno, parecer, nivel):
 
     return True
 
-def inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados):
+def inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados, titulo):
     """
     Insere um novo relatório no banco de dados.
 
@@ -320,33 +320,118 @@ def inserir_relatorio(nusp_aluno, atividades_resp, pesquisas_resp, observacoes_r
     :param publicados: Resposta sobre artigos aceitos ou publicados
     """
     query = """
-    INSERT INTO relatorios (titulo, texto, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador) 
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+    INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
 
     conn = get_db_conn()
     cur = conn.cursor()
-    
-    titulo = "Relatório"
+
+    dados_aluno = busca_aluno(where='nusp', value=nusp_aluno)
+    orientador = 1
+
     data_envio = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    texto = f"""
-    Atividades: {atividades_resp}
-    Pesquisas: {pesquisas_resp}
-    Observações: {observacoes_resp}
-    Dificuldade: {dificuldade}
-    """
-    # Escrita: {int(escrita.split('-')[-1])}
-    # Avaliação: {int(aval.split('-')[-1])}
-    # Publicados: {int(publicados.split('-')[-1])}
 
+    escrita = str(escrita.split('-')[-1])
+    aval = str(aval.split('-')[-1])
+    publicados = str(publicados.split('-')[-1])
 
-    # dados_aluno = busca_aluno(where='nusp', value=nusp_aluno)
-    # orientador = dados_aluno[0]['orientador'] if dados_aluno else None
+    if dificuldade == 'diff_sim':
+        dificuldade = 'Sim'
+    else:
+        dificuldade = 'Não'
 
-    cur.execute(query, (titulo, texto, data_envio, "Aguardando", "Aguardando", "Parecer ainda não enviado", "Parecer ainda não enviado", nusp_aluno, "1"))
+    cur.execute(query, (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, "Aguardando", "Aguardando", "Parecer ainda não enviado", "Parecer ainda não enviado", nusp_aluno, orientador, escrita, aval, publicados))
 
     conn.commit()
     cur.close()
     conn.close()
 
     return jsonify({"message": "Relatório adicionado com sucesso!"}), 201
+
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def verificar_login(tipo, id, senha):
+    conn = get_db_conn()
+    cur = conn.cursor()
+
+    if tipo == 'ccp':
+        query = "SELECT * FROM ccp WHERE nusp = %s AND senha = %s"
+    elif tipo == 'aluno':
+        query = "SELECT * FROM alunos WHERE nusp = %s AND senha = %s"
+    elif tipo == 'professor':
+        query = "SELECT * FROM professores WHERE nusp = %s AND senha = %s"
+    
+    try:
+        cur.execute(query, (id, hash_password(senha)))
+        result = cur.fetchone()
+
+        if result:
+            flash('Login realizado com sucesso!', 'success')
+            return True
+
+        else:
+            flash('Credenciais incorretas. Tente novamente.', 'error')
+            return False
+
+
+    except Exception as e:
+        flash(f'Ocorreu um erro: {str(e)}', 'error')
+        return False
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+def cadastrar_usuario(tipo, dados):
+    conn = get_db_conn()
+    cur = conn.cursor()
+
+    try:
+        if tipo == 'ccp':
+            cur.execute("SELECT * FROM ccp WHERE nusp = %s", (dados['nusp'],))
+            result = cur.fetchone()
+            if result:
+                flash('Este usuário CCP já existe.', 'error')
+                return False
+            
+            cur.execute("INSERT INTO ccp (nusp, nome, senha) VALUES (%s, %s, %s)", 
+                        (dados['nusp'], dados['nome'], hash_password(dados['senha'])))
+
+        elif tipo == 'aluno':
+            cur.execute("SELECT * FROM alunos WHERE nusp = %s", (dados['nusp'],))
+            result = cur.fetchone()
+            if result:
+                flash('Este aluno já está cadastrado.', 'error')
+                return False
+
+            cur.execute(""" 
+                INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (dados['nusp'], dados['nome'], dados['email'], hash_password(dados['senha']),
+                  dados['data_nasc'], dados['rg'], dados['local_nasc'], dados['nacionalidade'], dados['lattes']))
+
+        elif tipo == 'professor':
+            cur.execute("SELECT * FROM professores WHERE nusp = %s", (dados['nusp'],))
+            result = cur.fetchone()
+            if result:
+                flash('Este professor já está cadastrado.', 'error')
+                return False
+
+            cur.execute("INSERT INTO professores (nusp, nome, senha) VALUES (%s, %s, %s)", 
+                        (dados['nusp'], dados['nome'], hash_password(dados['senha'])))
+
+        conn.commit()
+        flash('Cadastro realizado com sucesso! Agora você pode fazer o login.', 'success')
+        return True
+
+    except Exception as e:
+        flash(f'Ocorreu um erro: {str(e)}', 'error')
+        return False
+
+    finally:
+        cur.close()
+        conn.close()
+

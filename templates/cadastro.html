@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro</title>
+</head>
+<body>
+    <h1>Cadastro</h1>
+    <form action="/cadastro" method="POST">
+        <label for="tipo">Tipo de Usuário:</label>
+        <select name="tipo" id="tipo" required>
+            <option value="ccp">CCP</option>
+            <option value="aluno">Aluno</option>
+            <option value="professor">Professor</option>
+        </select><br>
+
+        <label for="nusp">Número USP:</label>
+        <input type="text" name="nusp" id="nusp" required><br>
+
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" id="nome" required><br>
+
+        <label for="senha">Senha:</label>
+        <input type="password" name="senha" id="senha" required><br>
+
+        <div id="extra-fields"></div>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+  
+    <script>
+        document.getElementById('tipo').addEventListener('change', function() {
+            const extraFields = document.getElementById('extra-fields');
+            extraFields.innerHTML = '';  // Limpa os campos extras
+
+            if (this.value === 'aluno') {
+                extraFields.innerHTML = `
+                    <label for="nusp">NUSP:</label><input type="text" name="nusp" required><br>
+                    <label for="email">Email:</label><input type="email" name="email" required><br>
+                    <label for="data_nasc">Data de Nascimento:</label><input type="date" name="data_nasc" required><br>
+                    <label for="rg">RG:</label><input type="text" name="rg" required><br>
+                    <label for="local_nasc">Local de Nascimento:</label><input type="text" name="local_nasc" required><br>
+                    <label for="nacionalidade">Nacionalidade:</label><input type="text" name="nacionalidade" required><br>
+                    <label for="lattes">Lattes:</label><input type="text" name="lattes" required><br>
+                `;
+            } else if (this.value === 'professor') {
+                extraFields.innerHTML = `
+                    <label for="nusp">NUSP:</label><input type="text" name="nusp" required><br>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
