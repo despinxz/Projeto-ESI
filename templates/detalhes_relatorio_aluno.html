@@ -84,7 +84,7 @@
     </div>
 
     <script>
-        const relatorio_id = window.location.pathname.split('/').pop();
+        const nusp = window.location.pathname.split('/').pop();
 
         function setNotaClass(element, status) {
             element.classList.remove("adequado", "ressalvas", "insatisfatorio");
@@ -96,8 +96,8 @@
                 element.classList.add("insatisfatorio");
             }
         }
-
-        fetch(`/detalhes_relatorio/${relatorio_id}`)
+        const urlRelatorios = `{{ url_for('aluno.get_relatorios_aluno', nusp=nusp) }}`;
+        fetch(urlRelatorios)
             .then(response => response.json())
             .then(data => {
                 const relatorio = data.relatorios[0];

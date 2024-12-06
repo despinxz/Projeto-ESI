@@ -42,12 +42,6 @@
 
             ul{
                 list-style-type: none;
-                a{
-                    text-decoration: none;
-                    color:#000;
-                    padding:0;
-                    background-color: red;
-                }
                 a:hover{
                     color: #000;
                     text-decoration: none;
@@ -157,10 +151,7 @@
     <header>
         <ul>
             <li>
-                Feedbacks
-            </li>
-            <li>
-                Enviar Relatório
+                <a href="{{ url_for('feedback', nusp=nusp) }}">Feedbacks</a>
             </li>
         </ul>
     </header>
@@ -249,7 +240,7 @@
         </button>
     </section>
     <script>
-        const nusp_aluno = "{{ nusp_aluno }}";
+        const nusp = "{{ nusp }}";
     
         function enviarRelatorio(event) {
             event.preventDefault();
@@ -269,7 +260,7 @@
             }
             
             const dadosRelatorio = {
-                nusp_aluno,
+                nusp,
                 atividades_resp,
                 pesquisas_resp,
                 observacoes_resp,
@@ -278,8 +269,10 @@
                 aval: aval.id,
                 publicados: publicados.id
             };
+
+            const urlRelatorio = "{{ url_for('aluno.forms_relatorio', nusp=nusp) }}";
     
-            fetch(`/novo_relatorio/${nusp_aluno}`, {
+            fetch(urlRelatorio, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -289,7 +282,8 @@
             .then(response => {
                 if (response.ok) {
                     alert('Relatório enviado com sucesso!');
-                    window.location.href = `/${nusp_aluno}`; 
+                    const url = "{{ url_for('aluno.index', nusp='') }}" + nusp
+                    window.location.href = url; 
                 } else {
                     throw new Error('Erro ao enviar relatório');
                 }

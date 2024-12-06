@@ -1,32 +1,31 @@
-from flask import Flask, request, render_template, jsonify 
+from flask import Blueprint, request, render_template, jsonify
 import conn_bd
-import psycopg2 
 
-app = Flask(__name__)
+ccp = Blueprint('ccp', __name__, template_folder='templates')
 
-@app.route('/')
-def index():
-    return render_template('index_ccp.html')
+@ccp.route('/<nusp>')
+def index(nusp):
+    return render_template('index_ccp.html', nusp=nusp)
 
-@app.route('/tabela_relatorios')
+@ccp.route('/tabela_relatorios')
 def tabela_relatorios():
     return render_template('tabela_relatorios_ccp.html')
 
-@app.route('/relatorio/<id>')
+@ccp.route('/relatorio/<id>')
 def detalhes_relatorio(id):
     return render_template('detalhes_relatorio_ccp.html', relatorio_id=id)
 
-@app.route('/relatorios', methods=['GET'])
+@ccp.route('/relatorios', methods=['GET'])
 def get_relatorios_ccp():
     results = conn_bd.busca_relatorio()
     return results
 
-@app.route('/detalhes_relatorio/<relatorio_id>', methods=['GET', 'POST'])
+@ccp.route('/detalhes_relatorio/<relatorio_id>', methods=['GET', 'POST'])
 def get_detalhes_relatorio(relatorio_id):
     results = conn_bd.busca_relatorio(where='id', value=relatorio_id)
     return results
 
-@app.route('/feedback_ccp/<nusp_aluno>', methods=['GET'])
+@ccp.route('/feedback_ccp/<nusp_aluno>', methods=['GET'])
 def get_detalhes_aluno(nusp_aluno):
     detalhes_aluno = conn_bd.busca_detalhes_aluno(where="nusp", value=nusp_aluno)
 
@@ -47,7 +46,7 @@ def get_detalhes_aluno(nusp_aluno):
                            atividades_academicas=aluno['atividades_academicas'],
                            resumo_pesquisa=aluno['resumo_pesquisa'])
 
-@app.route('/feedback_ccp/<nusp_aluno>/save', methods=['POST'])
+@ccp.route('/feedback_ccp/<nusp_aluno>/save', methods=['POST'])
 def salvar_parecer(nusp_aluno):
     dados = request.get_json()
     parecer = dados.get('parecer_resp')
@@ -60,6 +59,3 @@ def salvar_parecer(nusp_aluno):
         return jsonify({"sucesso": True, "mensagem": "Parecer salvo com sucesso!"}), 200
     else:
         return jsonify({"error": "Erro ao salvar parecer"}), 500
-
-if __name__ == '__main__':
-    app.run(debug=True)

@@ -38,9 +38,9 @@
     </div>
 
     <script>
-        const nusp_aluno = window.location.pathname.split('/').pop();
+        const nusp = window.location.pathname.split('/').pop();
 
-        fetch(`/relatorios/${nusp_aluno}`)
+        fetch(`/relatorios/${nusp}`)
             .then(response => response.json())
             .then(data => {
                 const tabelaBody = document.getElementById('tabelaBody');
@@ -60,7 +60,8 @@
                     `;
 
                     row.addEventListener('click', function() {
-                        window.location.href = `/relatorio/${relatorio.id}`;
+                        const url = "{{ url_for('aluno.detalhes_relatorio', id='') }}" + relatorio.id
+                        window.location.href = url;
                     });
 
                     tabelaBody.appendChild(row);

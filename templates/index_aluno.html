@@ -49,11 +49,13 @@
 
         // Adiciona o `relatorio_id` nas rotas dos botões
         document.getElementById("btnEnviarRelatorio").addEventListener("click", function() {
-            window.location.href = `/formulario/${nusp}`;
+            const url = "{{ url_for('aluno.render_forms_relatorio', nusp='') }}" + nusp
+            window.location.href = url;
         });
 
         document.getElementById("btnRelatoriosEnviados").addEventListener("click", function() {
-            window.location.href = `/tabela_relatorios/${nusp}`;
+            const url = "{{ url_for('aluno.tabela_relatorios', nusp='') }}" + nusp
+            window.location.href = url;
         });
 
     </script>

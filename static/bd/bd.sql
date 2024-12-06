@@ -1,19 +1,22 @@
 CREATE TYPE nota AS ENUM ('Aguardando', 'Adequado', 'Adequado com ressalvas', 'Insatisfatório');
 
 CREATE TABLE ccp (
-  id INT PRIMARY KEY, 
-  nome VARCHAR(100) NOT NULL
+  nusp INT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  senha VARCHAR(256) NOT NULL
 );
 
 CREATE TABLE professores (
   nusp INT PRIMARY KEY,
-  nome VARCHAR(100) NOT NULL
+  nome VARCHAR(100) NOT NULL,
+  senha VARCHAR(256) NOT NULL
 );
 
 CREATE TABLE alunos (
   nusp INT PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
   email VARCHAR(50) NOT NULL,
+  senha VARCHAR(256) NOT NULL,
   data_nasc DATE NOT NULL,
   rg CHAR(10) UNIQUE,
   local_nasc VARCHAR(20) NOT NULL,

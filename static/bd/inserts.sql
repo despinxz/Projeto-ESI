@@ -1,0 +1,28 @@
+INSERT INTO professores (nusp, nome, senha) VALUES (1, 'Dr. Silva', 'senha123');
+INSERT INTO professores (nusp, nome, senha) VALUES (2, 'Dr. Souza', 'senha123');
+
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
+VALUES (123456, 'Carlos', 'carlos@dominio.com', 'senha123', '1995-06-12', '123456789', 'São Paulo', 'Brasileiro', 'http://lattes.carlos.com');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
+VALUES (789101, 'Ana', 'ana@dominio.com', 'senha123', '1996-07-23', '987654321', 'Rio de Janeiro', 'Brasileira', 'http://lattes.ana.com');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
+VALUES (654321, 'João', 'joao@dominio.com', 'senha123', '1994-04-10', '123789456', 'Belo Horizonte', 'Brasileiro', 'http://lattes.joao.com');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
+VALUES (112233, 'Maria', 'maria@dominio.com', 'senha123', '1997-08-19', '456123789', 'Curitiba', 'Brasileira', 'http://lattes.maria.com');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
+VALUES (445566, 'Pedro', 'pedro@dominio.com', 'senha123', '1995-12-25', '321654987', 'São Paulo', 'Brasileiro', 'http://lattes.pedro.com');
+
+INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
+VALUES ('Relatório teste 1', 'Texto para o primeiro relatório de teste.', 'Pesquisas realizadas pelo aluno.', 'Observações do relatório.', 'Sim', '2022-10-10 11:30:30', 'Aguardando', 'Aguardando', 'Parecer ainda não enviado.', 'Parecer ainda não enviado.', 123456, 1, 'S', 'S', 'S');
+INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
+VALUES ('Relatório teste 2', 'Texto para o segundo relatório de teste.', 'Pesquisas realizadas por Ana.', 'Observações do relatório.', 'Sim', '2022-11-11 11:30:30', 'Adequado', 'Aguardando', 'Relatório 2 está adequado.', 'Parecer ainda não enviado.', 123456, 1, 'S', 'S', 'S');
+INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
+VALUES ('Relatório teste 3', 'Texto para o terceiro relatório de teste.', 'Pesquisas realizadas por João.', 'Observações do relatório.', 'Não', '2022-12-12 11:30:30', 'Adequado com ressalvas', 'Aguardando', 'Relatório 3 tem algumas ressalvas.', 'Parecer ainda não enviado.', 654321, 1, 'S', 'S', 'S');
+INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
+VALUES ('Relatório teste 4', 'Texto para o quarto relatório de teste.', 'Pesquisas realizadas por Maria.', 'Observações do relatório.', 'Sim', '2023-01-01 10:00:00', 'Insatisfatório', 'Aguardando', 'Relatório 4 está insatisfatório.', 'Parecer ainda não enviado.', 789101, 1, 'S', 'S', 'S');
+INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
+VALUES ('Relatório teste 5', 'Texto para o quinto relatório de teste.', 'Pesquisas realizadas por João.', 'Observações do relatório.', 'Não', '2023-02-15 09:45:00', 'Aguardando', 'Aguardando', 'Parecer ainda não enviado.', 'Parecer ainda não enviado.', 654321, 1, 'S', 'S', 'S');
+INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
+VALUES ('Relatório teste 6', 'Texto para o sexto relatório de teste.', 'Pesquisas realizadas por Maria.', 'Observações do relatório.', 'Sim', '2023-03-20 12:20:00', 'Adequado', 'Adequado', 'Relatório 6 está adequado.', 'Parecer CCP adequado.', 112233, 1, 'S', 'S', 'S');
+INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
+VALUES ('Relatório teste 7', 'Texto para o sétimo relatório de teste.', 'Pesquisas realizadas por Pedro.', 'Observações do relatório.', 'Sim', '2023-04-25 14:00:00', 'Adequado com ressalvas', 'Adequado com ressalvas', 'Relatório 7 tem algumas ressalvas.', 'Parecer CCP com ressalvas.', 445566, 1, 'S', 'S', 'S');
