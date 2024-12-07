@@ -28,14 +28,20 @@
         }
 
         .alert-card {
-            margin-top: 20px;
+            margin: 20px auto; /* Centraliza horizontalmente e adiciona espaçamento vertical */
             padding: 20px;
             border-radius: 8px;
             background-color: #f8d7da; /* Vermelho claro de alerta */
             color: #721c24; /* Texto vermelho escuro */
             border: 1px solid #f5c6cb; /* Borda do alerta */
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 350px;
+            height: 100px;
         }
+
 
         .alert-card strong {
             font-size: 18px;
@@ -56,7 +62,7 @@
         </div>
 
         <!-- Card de Alerta -->
-        <div id="alertCard" class="alert-card" style="display: none;">
+        <div id="alertCard" class="alert-card" style="display: none">
             <strong>Data de Entrega do Relatório:</strong>
             <p id="deliveryDate">Carregando...</p>
         </div>
@@ -92,7 +98,7 @@
                     const deliveryDate = document.getElementById("deliveryDate");
 
                     if (data && data.date) {
-                        deliveryDate.textContent = data.date;
+                        deliveryDate.textContent = new Date(data.date).toLocaleDateString();
                         alertCard.style.display = "block";
                     } else {
                         deliveryDate.textContent = "Nenhuma data definida.";
