@@ -26,6 +26,20 @@
             width: 200px;
             font-size: 16px;
         }
+
+        .alert-card {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f8d7da; /* Vermelho claro de alerta */
+            color: #721c24; /* Texto vermelho escuro */
+            border: 1px solid #f5c6cb; /* Borda do alerta */
+            text-align: center;
+        }
+
+        .alert-card strong {
+            font-size: 18px;
+        }
     </style>
 </head>
 
@@ -40,24 +54,62 @@
                 <button class="btn btn-danger btn-option" id="btnSair">Sair</button>
             </div>
         </div>
+
+        <!-- Card de Alerta -->
+        <div id="alertCard" class="alert-card" style="display: none;">
+            <strong>Data de Entrega do Relatório:</strong>
+            <p id="deliveryDate">Carregando...</p>
+        </div>
     </div>
 
     <script>
         // Extrai o ID da URL atual
         const urlPath = window.location.pathname;
-        const nusp = urlPath.split('/').pop();  // Último segmento da URL
+        const nusp = urlPath.split('/').pop(); // Último segmento da URL
 
         // Adiciona o `relatorio_id` nas rotas dos botões
-        document.getElementById("btnEnviarRelatorio").addEventListener("click", function() {
-            const url = "{{ url_for('aluno.render_forms_relatorio', nusp='') }}" + nusp
+        document.getElementById("btnEnviarRelatorio").addEventListener("click", function () {
+            const url = "{{ url_for('aluno.render_forms_relatorio', nusp='') }}" + nusp;
             window.location.href = url;
         });
 
-        document.getElementById("btnRelatoriosEnviados").addEventListener("click", function() {
-            const url = "{{ url_for('aluno.tabela_relatorios', nusp='') }}" + nusp
+        document.getElementById("btnRelatoriosEnviados").addEventListener("click", function () {
+            const url = "{{ url_for('aluno.tabela_relatorios', nusp='') }}" + nusp;
             window.location.href = url;
         });
 
+        // Busca a data de entrega do relatório
+        function fetchDeliveryDate() {
+            fetch(`/aluno/data_entrega`, { method: 'GET' })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao buscar a data de entrega.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const alertCard = document.getElementById("alertCard");
+                    const deliveryDate = document.getElementById("deliveryDate");
+
+                    if (data && data.date) {
+                        deliveryDate.textContent = data.date;
+                        alertCard.style.display = "block";
+                    } else {
+                        deliveryDate.textContent = "Nenhuma data definida.";
+                        alertCard.style.display = "block";
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro:", error);
+                    const deliveryDate = document.getElementById("deliveryDate");
+                    deliveryDate.textContent = "Erro ao carregar a data.";
+                    const alertCard = document.getElementById("alertCard");
+                    alertCard.style.display = "block";
+                });
+        }
+
+        // Chama a função ao carregar a página
+        fetchDeliveryDate();
     </script>
 
     <!-- Bootstrap JS Bundle (inclui Popper) -->

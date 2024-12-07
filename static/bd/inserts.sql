@@ -26,3 +26,10 @@ INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_res
 VALUES ('Relatório teste 6', 'Texto para o sexto relatório de teste.', 'Pesquisas realizadas por Maria.', 'Observações do relatório.', 'Sim', '2023-03-20 12:20:00', 'Adequado', 'Adequado', 'Relatório 6 está adequado.', 'Parecer CCP adequado.', 112233, 1, 'S', 'S', 'S');
 INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
 VALUES ('Relatório teste 7', 'Texto para o sétimo relatório de teste.', 'Pesquisas realizadas por Pedro.', 'Observações do relatório.', 'Sim', '2023-04-25 14:00:00', 'Adequado com ressalvas', 'Adequado com ressalvas', 'Relatório 7 tem algumas ressalvas.', 'Parecer CCP com ressalvas.', 445566, 1, 'S', 'S', 'S');
+
+INSERT INTO data_entrega_relatorio (data_entrega_relatorio)
+VALUES ('1995-06-12');
+
+UPDATE data_entrega_relatorio
+SET data_entrega_relatorio = '2024-12-01'
+WHERE id = '1';

@@ -15,7 +15,7 @@ def get_db_conn():
         host='localhost',
         database='posgraduacao',
         user='postgres',
-        password='12345678'
+        password='15262435'
     )
     return conn
 
@@ -357,11 +357,11 @@ def verificar_login(tipo, id, senha):
     cur = conn.cursor()
 
     if tipo == 'ccp':
-        query = "SELECT * FROM ccp WHERE nusp = %s AND senha = %s"
+        query = f"SELECT * FROM ccp WHERE nusp = '{id}' AND senha = '{senha}'"
     elif tipo == 'aluno':
-        query = "SELECT * FROM alunos WHERE nusp = %s AND senha = %s"
+        query = f"SELECT * FROM alunos WHERE nusp = '{id}' AND senha = '{senha}'"
     elif tipo == 'professor':
-        query = "SELECT * FROM professores WHERE nusp = %s AND senha = %s"
+        query = f"SELECT * FROM professores WHERE nusp = '{id}' AND senha = '{senha}'"
     
     try:
         cur.execute(query, (id, hash_password(senha)))
@@ -435,3 +435,48 @@ def cadastrar_usuario(tipo, dados):
         cur.close()
         conn.close()
 
+def atualizar_data_relatorio(nova_data):
+    query = f"""
+        UPDATE data_entrega_relatorio
+        SET data_entrega_relatorio = {nova_data}
+        WHERE id = '1'
+    """
+    try:
+        conn = get_db_conn()  # Substitua pela função que retorna a conexão do banco
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"Erro ao atualizar data: {e}")
+        return False
+    finally:
+        if conn:
+            conn.close()
+
+def data_entrega():
+    """
+    Retorna a data de entrega geral dos relatórios.
+
+    :return: Data de entrega no formato JSON.
+    """
+    query = """
+        SELECT data_entrega_relatorio
+        FROM data_entrega_relatorio
+        WHERE id = '1'
+    """
+
+    conn = get_db_conn()
+    cur = conn.cursor()
+    cur.execute(query)
+
+    # Obtem apenas o primeiro resultado
+    result = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    if result:
+        return jsonify({'date': result[0]})  # Retorna o campo diretamente como JSON
+    else:
+        return jsonify({'error': 'Data não encontrada.'}), 404

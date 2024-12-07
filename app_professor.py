@@ -15,7 +15,7 @@ def tabela_relatorios(nusp):
 def detalhes_relatorio(id):
     return render_template('detalhes_relatorio_professor.html', relatorio_id=id)
 
-@professor.route('/relatorios/<nusp>', methods=['GET'])
+@professor.route('/tabela_relatorios/relatorios/<nusp>', methods=['GET'])
 def get_relatorios_professor(nusp):
     results = conn_bd.busca_relatorio(where="orientador", value=nusp)
     return results
@@ -25,9 +25,9 @@ def get_detalhes_relatorio(relatorio_id):
     results = conn_bd.busca_relatorio(where='id', value=relatorio_id)
     return results
 
-@professor.route('/feedback_professor/<nusp>', methods=['GET'])
+@professor.route('/feedback_professor/<nusp_aluno>', methods=['GET'])
 def get_detalhes_aluno(nusp):
-    detalhes_aluno = conn_bd.busca_detalhes_aluno(where="nusp", value=nusp)
+    detalhes_aluno = conn_bd.busca_detalhes_aluno(where="nusp_aluno", value=nusp)
 
     if not detalhes_aluno:
         return jsonify({"error": "Aluno não encontrado"}), 404

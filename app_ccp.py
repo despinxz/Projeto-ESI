@@ -59,3 +59,19 @@ def salvar_parecer(nusp_aluno):
         return jsonify({"sucesso": True, "mensagem": "Parecer salvo com sucesso!"}), 200
     else:
         return jsonify({"error": "Erro ao salvar parecer"}), 500
+
+@ccp.route('/atualizar_data', methods=['POST'])
+def atualizar_data():
+    dados = request.get_json() 
+    data_selecionada = dados.get('date')
+
+    if not data_selecionada:
+        return jsonify({"error": "Dados incompletos. Certifique-se de enviar 'date'."}), 400
+
+    # Atualiza a data no banco de dados
+    sucesso = conn_bd.atualizar_data_relatorio(data_selecionada)
+
+    if sucesso:
+        return jsonify({"sucesso": True, "mensagem": "Data atualizada com sucesso!"}), 200
+    else:
+        return jsonify({"error": "Erro ao atualizar a data no banco de dados."}), 500

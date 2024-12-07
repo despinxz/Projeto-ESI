@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu de Opções</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         body {
             padding: 20px;
@@ -26,6 +27,40 @@
             width: 200px;
             font-size: 16px;
         }
+
+        /* Estilo para o modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+        }
+
+        .modal-header {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
     </style>
 </head>
 
@@ -34,24 +69,79 @@
         <div class="content">
             <h2>Programa de Pós-Graduação - Tela CCP</h2>
             <div class="button-container">
-                <button class="btn btn-secondary btn-option" id="btnRelatoriosRecebidos">Relatórios Recebidos</button>
-                <button class="btn btn-info btn-option" id="btnDados">Dados</button>
+                <button class="btn btn-info btn-option" id="btnEditarData">Editar data de entrega</button>
+                <button class="btn btn-info btn-option" id="btnRelatoriosRecebidos">Relatórios Recebidos</button>
+                <button class="btn btn-secondary btn-option" id="btnDados">Dados</button>
                 <button class="btn btn-danger btn-option" id="btnSair">Sair</button>
             </div>
         </div>
     </div>
 
-    <script>
-        // Extrai o ID da URL atual
-        const urlPath = window.location.pathname;
-        const nusp = urlPath.split('/').pop();  // Último segmento da URL
+    <!-- Modal -->
+    <div id="modalOverlay" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                Data selecionada: <span id="selectedDate">Nenhuma</span>
+            </div>
+            <input type="text" id="datepicker" class="form-control" placeholder="Selecione uma data" readonly>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnCancel">Cancelar</button>
+                <button class="btn btn-primary" id="btnConfirm">Confirmar</button>
+            </div>
+        </div>
+    </div>
 
-        // Adiciona o `relatorio_id` nas rotas dos botões
-        document.getElementById("btnRelatoriosRecebidos").addEventListener("click", function() {
-            const url = "{{ url_for('cpp.tabela_relatorios') }}"
-            window.location.href = url;
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        const modalOverlay = document.getElementById("modalOverlay");
+        const selectedDateSpan = document.getElementById("selectedDate");
+        const datepickerInput = document.getElementById("datepicker");
+        let selectedDate = null;
+
+        // Inicializa o DatePicker
+        flatpickr(datepickerInput, {
+            onChange: function (selectedDates, dateStr) {
+                selectedDate = dateStr;
+                selectedDateSpan.textContent = selectedDate || "Nenhuma";
+            }
         });
 
+        document.getElementById("btnEditarData").addEventListener("click", function () {
+            modalOverlay.style.display = "flex";
+        });
+
+        document.getElementById("btnCancel").addEventListener("click", function () {
+            modalOverlay.style.display = "none";
+            selectedDate = null;
+            selectedDateSpan.textContent = "Nenhuma";
+        });
+
+        document.getElementById("btnConfirm").addEventListener("click", function () {
+            if (selectedDate) {
+                fetch('/ccp/atualizar-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ date: selectedDate }),
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("Data atualizada com sucesso!");
+                        } else {
+                            alert("Erro ao atualizar a data.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        alert("Ocorreu um erro ao atualizar a data.");
+                    });
+
+                modalOverlay.style.display = "none";
+            } else {
+                alert("Nenhuma data foi selecionada!");
+            }
+        });
     </script>
 
     <!-- Bootstrap JS Bundle (inclui Popper) -->

@@ -29,6 +29,11 @@ def get_detalhes_relatorio(relatorio_id):
     results = conn_bd.busca_relatorio(where='id', value=relatorio_id)
     return results
 
+@aluno.route('/data_entrega', methods=['GET'])
+def get_data_entrega():
+    results = conn_bd.data_entrega()
+    return results
+
 @aluno.route('/novo_relatorio/<nusp>', methods=['POST'])
 def forms_relatorio(nusp):
     dados = request.json  # Recebe os dados no formato JSON
