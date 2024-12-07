@@ -1,5 +1,6 @@
 -- Active: 1733532974788@@127.0.0.1@5432@posgraduacao
 CREATE TYPE nota AS ENUM ('Aguardando', 'Adequado', 'Adequado com ressalvas', 'Insatisfatório');
+CREATE TYPE status_aluno AS ENUM ('Ativo', 'Inativo');
 
 CREATE TABLE ccp (
   nusp INT PRIMARY KEY,
@@ -22,7 +23,8 @@ CREATE TABLE alunos (
   rg CHAR(10) UNIQUE,
   local_nasc VARCHAR(20) NOT NULL,
   nacionalidade VARCHAR(20) NOT NULL,
-  lattes VARCHAR(50) NOT NULL
+  lattes VARCHAR(50) NOT NULL,
+  status_aluno status_aluno
 );
 
 CREATE TABLE cursos (

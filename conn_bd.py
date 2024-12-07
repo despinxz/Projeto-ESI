@@ -2,6 +2,7 @@ from flask import jsonify, flash
 import psycopg2
 from datetime import datetime
 import hashlib
+import json
 # import env
 
 
@@ -141,7 +142,7 @@ def num_materias_aprovadas(nusp, curso):
 
 def busca_aluno(where=None, value=None):
     """
-    Realiza busca na tabela de aluno, podendo ter filtros ou não.
+    Realiza busca na tabela de aluno e verifica o desempenho com base nos relatórios enviados.
 
     :param where: Nome da coluna para realização do filtro
     :param value: Valor a ser filtrado 
@@ -158,22 +159,42 @@ def busca_aluno(where=None, value=None):
 
     result = cur.fetchall()
 
-    cur.close()
-    conn.close()
-
     dados_aluno = []
 
     for dados in result:
+        nusp = dados[0]
+
+        # Query para buscar os dois relatórios mais recentes do aluno
+        relatorios_query = f"""
+            SELECT nota_ccp
+            FROM relatorios
+            WHERE aluno = {nusp}
+            ORDER BY data_envio DESC
+            LIMIT 2
+        """
+        cur.execute(relatorios_query)
+        relatorios = cur.fetchall()
+
+        # Verificar se as duas últimas notas são "Insatisfatório"
+        notas = [relatorio[0] for relatorio in relatorios]
+        baixo_desempenho = notas.count('Insatisfatório') == 2
+
         dados_aluno.append({
             'nusp': dados[0],
             'nome': dados[1],
             'email': dados[2],
-            'data_nasc': dados[3],
-            'rg': dados[4],
-            'local_nasc': dados[5],
-            'nacionalidade': dados[6],
-            'lattes': dados[7]
+            'data_nasc': dados[4],
+            'rg': dados[5],
+            'local_nasc': dados[6],
+            'nacionalidade': dados[7],
+            'lattes': dados[8],
+            'status_aluno': dados[9],
+            'baixo_desempenho': baixo_desempenho
         })
+
+    cur.close()
+    conn.close()
+
     return jsonify({'dados_aluno': dados_aluno})
 
 def busca_relatorio(where=None, value=None):
@@ -442,7 +463,7 @@ def atualizar_data_relatorio(nova_data):
         WHERE id = '1'
     """
     try:
-        conn = get_db_conn()  # Substitua pela função que retorna a conexão do banco
+        conn = get_db_conn()  
         cursor = conn.cursor()
         cursor.execute(query)
         conn.commit()
@@ -480,3 +501,7 @@ def data_entrega():
         return jsonify({'date': result[0]})  # Retorna o campo diretamente como JSON
     else:
         return jsonify({'error': 'Data não encontrada.'}), 404
+
+if __name__ == '__main__':
+    alunos = busca_aluno()
+    print(alunos)

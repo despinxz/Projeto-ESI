@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Relatórios</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <style>
+        /* Estilo para linhas com baixo desempenho */
+        .baixo-desempenho {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="mt-5">Relatórios recebidos</h2>
+        
+        <div id="tabelaRelatorios" class="mt-5">
+            <table class="table table-striped" id="relatoriosTable">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Nº USP</th>
+                        <th>E-mail</th>
+                        <th>Lattes</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <th><input type="text" placeholder="Filtrar Nome" /></th>
+                        <th><input type="text" placeholder="Filtrar Nº USP" /></th>
+                        <th><input type="text" placeholder="Filtrar E-Mail" /></th>
+                        <th><input type="text" placeholder="Filtrar Lattes" /></th>
+                        <th><input type="text" placeholder="Filtrar Status" /></th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaBody">
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        // Obtém o último segmento do caminho da URL como 'nusp' (se necessário)
+        const nusp = window.location.pathname.split('/').pop();
+
+        fetch(`/ccp/alunos`)
+            .then(response => response.json())
+            .then(data => {
+                const tabelaBody = document.getElementById('tabelaBody');
+                
+                // Limpa a tabela antes de inserir novos dados
+                tabelaBody.innerHTML = '';
+
+                // Itera sobre os relatórios retornados e cria as linhas da tabela
+                data.dados_aluno.forEach(aluno => {
+                    const row = document.createElement('tr');
+
+                    // Verifica se o aluno tem baixo desempenho
+                    const baixoDesempenho = aluno.baixo_desempenho;
+
+                    // Adiciona a classe 'baixo-desempenho' se necessário
+                    if (baixoDesempenho) {
+                        row.classList.add('baixo-desempenho');
+                    }
+
+                    row.innerHTML = `
+                        <td>${aluno.nome}</td>
+                        <td>${aluno.nusp}</td>
+                        <td>${aluno.email}</td>
+                        <td>${aluno.lattes}</td>
+                        <td>${aluno.status_aluno}</td>
+                    `;
+
+                    tabelaBody.appendChild(row);
+                });
+
+                // Inicializa o DataTable
+                const dataTable = $('#relatoriosTable').DataTable({
+                    "order": [[0, "asc"]], // Ajuste a coluna de ordenação conforme necessário
+                    "paging": true, // Habilita paginação
+                    "searching": true, // Habilita o campo de busca
+                    "info": true // Exibe informações de paginação
+                });
+
+                // Configura os filtros nas colunas
+                $('#relatoriosTable thead tr:eq(1) th').each(function (i) {
+                    $('input', this).on('keyup change', function () {
+                        if (dataTable.column(i).search() !== this.value) {
+                            dataTable
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao buscar relatórios:', error);
+            });
+    </script>
+
+    <!-- Bootstrap JS Bundle (inclui Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

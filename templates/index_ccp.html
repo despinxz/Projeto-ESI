@@ -71,6 +71,7 @@
             <div class="button-container">
                 <button class="btn btn-info btn-option" id="btnEditarData">Editar data de entrega</button>
                 <button class="btn btn-info btn-option" id="btnRelatoriosRecebidos">Relatórios Recebidos</button>
+                <button class="btn btn-info btn-option" id="btnAlunos">Alunos</button>
                 <button class="btn btn-secondary btn-option" id="btnDados">Dados</button>
                 <button class="btn btn-danger btn-option" id="btnSair">Sair</button>
             </div>
@@ -93,12 +94,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
+        // Script para o botão de cadastro de data
         const modalOverlay = document.getElementById("modalOverlay");
         const selectedDateSpan = document.getElementById("selectedDate");
         const datepickerInput = document.getElementById("datepicker");
         let selectedDate = null;
 
-        // Inicializa o DatePicker
         flatpickr(datepickerInput, {
             onChange: function (selectedDates, dateStr) {
                 selectedDate = dateStr;
@@ -142,6 +143,19 @@
                 alert("Nenhuma data foi selecionada!");
             }
         });
+
+        // Script para direcionar à lista de relatórios
+        const url_relatorios = "{{ url_for('ccp.tabela_relatorios') }}"
+        document.getElementById("btnRelatoriosRecebidos").addEventListener("click", function() {
+            window.location.href = url_relatorios;
+        });
+
+        // Script para direcionar à lista de alunos
+        const url_alunos = "{{ url_for('ccp.tabela_alunos') }}"
+        document.getElementById("btnAlunos").addEventListener("click", function() {
+            window.location.href = url_alunos;
+        });
+
     </script>
 
     <!-- Bootstrap JS Bundle (inclui Popper) -->

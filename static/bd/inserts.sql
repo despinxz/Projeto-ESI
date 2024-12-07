@@ -1,16 +1,16 @@
 INSERT INTO professores (nusp, nome, senha) VALUES (1, 'Dr. Silva', 'senha123');
 INSERT INTO professores (nusp, nome, senha) VALUES (2, 'Dr. Souza', 'senha123');
 
-INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
-VALUES (123456, 'Carlos', 'carlos@dominio.com', 'senha123', '1995-06-12', '123456789', 'São Paulo', 'Brasileiro', 'http://lattes.carlos.com');
-INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
-VALUES (789101, 'Ana', 'ana@dominio.com', 'senha123', '1996-07-23', '987654321', 'Rio de Janeiro', 'Brasileira', 'http://lattes.ana.com');
-INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
-VALUES (654321, 'João', 'joao@dominio.com', 'senha123', '1994-04-10', '123789456', 'Belo Horizonte', 'Brasileiro', 'http://lattes.joao.com');
-INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
-VALUES (112233, 'Maria', 'maria@dominio.com', 'senha123', '1997-08-19', '456123789', 'Curitiba', 'Brasileira', 'http://lattes.maria.com');
-INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
-VALUES (445566, 'Pedro', 'pedro@dominio.com', 'senha123', '1995-12-25', '321654987', 'São Paulo', 'Brasileiro', 'http://lattes.pedro.com');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, status_aluno) 
+VALUES (123456, 'Carlos', 'carlos@dominio.com', 'senha123', '1995-06-12', '123456789', 'São Paulo', 'Brasileiro', 'http://lattes.carlos.com', 'Ativo');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, status_aluno) 
+VALUES (789101, 'Ana', 'ana@dominio.com', 'senha123', '1996-07-23', '987654321', 'Rio de Janeiro', 'Brasileira', 'http://lattes.ana.com', 'Ativo');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, status_aluno) 
+VALUES (654321, 'João', 'joao@dominio.com', 'senha123', '1994-04-10', '123789456', 'Belo Horizonte', 'Brasileiro', 'http://lattes.joao.com', 'Ativo');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, status_aluno) 
+VALUES (112233, 'Maria', 'maria@dominio.com', 'senha123', '1997-08-19', '456123789', 'Curitiba', 'Brasileira', 'http://lattes.maria.com', 'Inativo');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, status_aluno) 
+VALUES (445566, 'Pedro', 'pedro@dominio.com', 'senha123', '1995-12-25', '321654987', 'São Paulo', 'Brasileiro', 'http://lattes.pedro.com', 'Inativo');
 
 INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
 VALUES ('Relatório teste 1', 'Texto para o primeiro relatório de teste.', 'Pesquisas realizadas pelo aluno.', 'Observações do relatório.', 'Sim', '2022-10-10 11:30:30', 'Aguardando', 'Aguardando', 'Parecer ainda não enviado.', 'Parecer ainda não enviado.', 123456, 1, 'S', 'S', 'S');
@@ -27,9 +27,11 @@ VALUES ('Relatório teste 6', 'Texto para o sexto relatório de teste.', 'Pesqui
 INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
 VALUES ('Relatório teste 7', 'Texto para o sétimo relatório de teste.', 'Pesquisas realizadas por Pedro.', 'Observações do relatório.', 'Sim', '2023-04-25 14:00:00', 'Adequado com ressalvas', 'Adequado com ressalvas', 'Relatório 7 tem algumas ressalvas.', 'Parecer CCP com ressalvas.', 445566, 1, 'S', 'S', 'S');
 
+INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
+VALUES ('Relatório teste 8', 'Texto para o oitavo relatório de teste.', 'Pesquisas realizadas por Pedro.', 'Observações do relatório.', 'Sim', '2024-12-25 14:00:00', 'Adequado com ressalvas', 'Insatisfatório', 'Relatório 8 tem algumas ressalvas.', 'Parecer CCP insatisfatório.', 445566, 1, 'S', 'S', 'S');
+
+INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
+VALUES ('Relatório teste 9', 'Texto para o nono relatório de teste.', 'Pesquisas realizadas por Pedro.', 'Observações do relatório.', 'Sim', '2024-12-24 14:00:00', 'Adequado com ressalvas', 'Insatisfatório', 'Relatório 9 tem algumas ressalvas.', 'Parecer CCP insatisfatório.', 445566, 1, 'S', 'S', 'S');
+
 INSERT INTO data_entrega_relatorio (data_entrega_relatorio)
 VALUES ('1995-06-12');
-
-UPDATE data_entrega_relatorio
-SET data_entrega_relatorio = '2024-12-01'
-WHERE id = '1';

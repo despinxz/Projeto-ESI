@@ -11,6 +11,10 @@ def index(nusp):
 def tabela_relatorios():
     return render_template('tabela_relatorios_ccp.html')
 
+@ccp.route('/tabela_alunos')
+def tabela_alunos():
+    return render_template('tabela_alunos_ccp.html')
+
 @ccp.route('/relatorio/<id>')
 def detalhes_relatorio(id):
     return render_template('detalhes_relatorio_ccp.html', relatorio_id=id)
@@ -18,6 +22,11 @@ def detalhes_relatorio(id):
 @ccp.route('/relatorios', methods=['GET'])
 def get_relatorios_ccp():
     results = conn_bd.busca_relatorio()
+    return results
+
+@ccp.route('/alunos', methods=['GET'])
+def get_alunos_ccp():
+    results = conn_bd.busca_aluno()
     return results
 
 @ccp.route('/detalhes_relatorio/<relatorio_id>', methods=['GET', 'POST'])
