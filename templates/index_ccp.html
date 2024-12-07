@@ -118,7 +118,7 @@
 
         document.getElementById("btnConfirm").addEventListener("click", function () {
             if (selectedDate) {
-                fetch('/ccp/atualizar-data', {
+                fetch('/ccp/atualizar_data', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

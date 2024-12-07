@@ -438,7 +438,7 @@ def cadastrar_usuario(tipo, dados):
 def atualizar_data_relatorio(nova_data):
     query = f"""
         UPDATE data_entrega_relatorio
-        SET data_entrega_relatorio = {nova_data}
+        SET data_entrega_relatorio = DATE('{nova_data}')
         WHERE id = '1'
     """
     try:
