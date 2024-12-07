@@ -1,3 +1,4 @@
+-- Active: 1733532974788@@127.0.0.1@5432@posgraduacao
 CREATE TYPE nota AS ENUM ('Aguardando', 'Adequado', 'Adequado com ressalvas', 'Insatisfatório');
 
 CREATE TABLE ccp (
@@ -87,4 +88,9 @@ CREATE TABLE relatorios (
   CONSTRAINT fk_orientador
     FOREIGN KEY (orientador) 
     REFERENCES professores(nusp)
+);
+
+CREATE TABLE data_entrega_relatorio (
+  id SERIAL PRIMARY KEY,
+  data_entrega_relatorio DATE NOT NULL
 );
