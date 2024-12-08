@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar Relatórios</title>
+    <title>Buscar Alunos</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -13,13 +14,17 @@
         .baixo-desempenho {
             color: red;
         }
+
+        tr {
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2 class="mt-5">Relatórios recebidos</h2>
-        
+        <h2 class="mt-5">Alunos cadastrados</h2>
+
         <div id="tabelaRelatorios" class="mt-5">
             <table class="table table-striped" id="relatoriosTable">
                 <thead>
@@ -43,21 +48,25 @@
             </table>
         </div>
 
+        <!-- Disclaimer -->
+        <p class="text-danger mt-3">
+            <strong>Nota:</strong> Alunos com o nome destacado em vermelho apresentam desempenho abaixo da média. Recomenda-se avaliar o desligamento desses alunos.
+        </p>
     </div>
 
     <script>
-        // Obtém o último segmento do caminho da URL como 'nusp' (se necessário)
-        const nusp = window.location.pathname.split('/').pop();
+        // URL base para redirecionamento
+        const detalheUrlBase = "/alunos/detalhes/";
 
         fetch(`/ccp/alunos`)
             .then(response => response.json())
             .then(data => {
                 const tabelaBody = document.getElementById('tabelaBody');
-                
+
                 // Limpa a tabela antes de inserir novos dados
                 tabelaBody.innerHTML = '';
 
-                // Itera sobre os relatórios retornados e cria as linhas da tabela
+                // Itera sobre os alunos retornados e cria as linhas da tabela
                 data.dados_aluno.forEach(aluno => {
                     const row = document.createElement('tr');
 
@@ -76,6 +85,11 @@
                         <td>${aluno.lattes}</td>
                         <td>${aluno.status_aluno}</td>
                     `;
+
+                    row.addEventListener('click', function() {
+                        const url = "{{ url_for('ccp.detalhes_aluno', nusp='') }}" + aluno.nusp;
+                        window.location.href = url;
+                    });
 
                     tabelaBody.appendChild(row);
                 });
@@ -101,11 +115,12 @@
                 });
             })
             .catch(error => {
-                console.error('Erro ao buscar relatórios:', error);
+                console.error('Erro ao buscar alunos:', error);
             });
     </script>
 
     <!-- Bootstrap JS Bundle (inclui Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

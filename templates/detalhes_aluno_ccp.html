@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Aluno</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        h4 {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .left-section {
+            border-right: 2px solid #ddd;
+        }
+
+        .right-section h4 {
+            font-size: 16px;
+        }
+
+        .right-section p {
+            color: #666;
+        }
+
+        .adequado {
+            color: green;
+            font-weight: bold;
+        }
+
+        .insatisfatorio {
+            color: red;
+            font-weight: bold;
+        }
+
+        .btn-desligar {
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <!-- Seção da esquerda (Informações do Aluno) -->
+            <div class="col-md-7 left-section">
+                <h2 id="nome">Carregando...</h2>
+                <p><strong>NUSP:</strong> <span id="nusp">Carregando...</span></p>
+                <p><strong>E-mail:</strong> <span id="email">Carregando...</span></p>
+                <p><strong>Data de Nascimento:</strong> <span id="data_nasc">Carregando...</span></p>
+                <p><strong>RG:</strong> <span id="rg">Carregando...</span></p>
+                <p><strong>Local de Nascimento:</strong> <span id="local_nasc">Carregando...</span></p>
+                <p><strong>Nacionalidade:</strong> <span id="nacionalidade">Carregando...</span></p>
+                <p><strong>Status:</strong> <span id="status_aluno">Carregando...</span></p>
+                <button id="btnDesligar" class="btn btn-desligar mt-3 d-none" data-bs-toggle="modal" data-bs-target="#confirmModal">Desligar</button>
+            </div>
+
+            <!-- Seção da direita (Notas Recentes) -->
+            <div class="col-md-5 right-section">
+                <h4>Últimas Notas:</h4>
+                <ul id="ultimas_notas">
+                    <li>Carregando...</li>
+                </ul>
+
+                <h4>Desempenho:</h4>
+                <p id="baixo_desempenho">Carregando...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirmar Desligamento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Você tem certeza que deseja desligar este aluno?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmarDesligamento">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Obtém o número USP da URL
+        const nusp = window.location.pathname.split('/').pop();
+
+        // Fetch para buscar os dados do aluno
+        fetch(`/ccp/detalhes_aluno/${nusp}`)
+            .then(response => response.json())
+            .then(data => {
+                const aluno = data.dados_aluno[0]; // Considerando que sempre haverá um aluno retornado
+
+                // Preenche os dados do aluno
+                document.getElementById('nome').textContent = aluno.nome;
+                document.getElementById('nusp').textContent = aluno.nusp;
+                document.getElementById('email').textContent = aluno.email;
+                document.getElementById('data_nasc').textContent = new Date(aluno.data_nasc).toLocaleDateString();
+                document.getElementById('rg').textContent = aluno.rg;
+                document.getElementById('local_nasc').textContent = aluno.local_nasc;
+                document.getElementById('nacionalidade').textContent = aluno.nacionalidade;
+                document.getElementById('status_aluno').textContent = aluno.status_aluno;
+
+                // Exibe as últimas notas
+                const notasList = document.getElementById('ultimas_notas');
+                notasList.innerHTML = ''; // Limpa o conteúdo existente
+                aluno.ultimas_notas.forEach(nota => {
+                    const li = document.createElement('li');
+                    li.textContent = nota;
+                    li.classList.add(nota === "Insatisfatório" ? "insatisfatorio" : "adequado");
+                    notasList.appendChild(li);
+                });
+
+                // Indica se o desempenho é considerado baixo
+                document.getElementById('baixo_desempenho').textContent = aluno.baixo_desempenho
+                    ? "Baixo desempenho"
+                    : "Desempenho adequado";
+                document.getElementById('baixo_desempenho').classList.add(aluno.baixo_desempenho ? "insatisfatorio" : "adequado");
+
+                // Exibe o botão Desligar apenas se o status do aluno for Ativo
+                if (aluno.status_aluno === "Ativo") {
+                    document.getElementById('btnDesligar').classList.remove('d-none');
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar dados do aluno:", error);
+                document.getElementById('nome').textContent = "Erro ao carregar dados";
+            });
+
+        // Lógica para o botão Confirmar no Modal
+        document.getElementById('confirmarDesligamento').addEventListener('click', function () {
+            fetch(`/ccp/desligar_aluno/${nusp}`, {
+                method: 'POST'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Aluno desligado com sucesso!');
+                        window.location.reload(); // Recarrega a página após sucesso
+                    } else {
+                        alert('Erro ao desligar o aluno.');
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao desligar o aluno:", error);
+                });
+        });
+    </script>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

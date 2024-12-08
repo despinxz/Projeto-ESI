@@ -19,6 +19,10 @@ def tabela_alunos():
 def detalhes_relatorio(id):
     return render_template('detalhes_relatorio_ccp.html', relatorio_id=id)
 
+@ccp.route('/aluno/<nusp>')
+def detalhes_aluno(nusp):
+    return render_template('detalhes_aluno_ccp.html', nusp=nusp)
+
 @ccp.route('/relatorios', methods=['GET'])
 def get_relatorios_ccp():
     results = conn_bd.busca_relatorio()
@@ -32,6 +36,11 @@ def get_alunos_ccp():
 @ccp.route('/detalhes_relatorio/<relatorio_id>', methods=['GET', 'POST'])
 def get_detalhes_relatorio(relatorio_id):
     results = conn_bd.busca_relatorio(where='id', value=relatorio_id)
+    return results
+
+@ccp.route('/detalhes_aluno/<nusp>', methods=['GET', 'POST'])
+def get_info_aluno(nusp):
+    results = conn_bd.busca_aluno(where='nusp', value=nusp)
     return results
 
 @ccp.route('/feedback_ccp/<nusp_aluno>', methods=['GET'])
@@ -84,3 +93,11 @@ def atualizar_data():
         return jsonify({"sucesso": True, "mensagem": "Data atualizada com sucesso!"}), 200
     else:
         return jsonify({"error": "Erro ao atualizar a data no banco de dados."}), 500
+    
+@ccp.route('/desligar_aluno/<nusp>', methods=['POST'])
+def desligar_aluno(nusp):
+    sucesso = conn_bd.desligar_aluno(nusp)  
+    if sucesso:
+        return jsonify({"mensagem": "Aluno desligado com sucesso!"}), 200
+    else:
+        return jsonify({"error": "Erro ao desligar o aluno."}), 500

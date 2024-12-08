@@ -175,7 +175,7 @@ def busca_aluno(where=None, value=None):
         cur.execute(relatorios_query)
         relatorios = cur.fetchall()
 
-        # Verificar se as duas últimas notas são "Insatisfatório"
+        # Verificar as duas últimas notas
         notas = [relatorio[0] for relatorio in relatorios]
         baixo_desempenho = notas.count('Insatisfatório') == 2
 
@@ -189,13 +189,15 @@ def busca_aluno(where=None, value=None):
             'nacionalidade': dados[7],
             'lattes': dados[8],
             'status_aluno': dados[9],
-            'baixo_desempenho': baixo_desempenho
+            'baixo_desempenho': baixo_desempenho,
+            'ultimas_notas': notas  # Inclui as últimas duas notas no JSON
         })
 
     cur.close()
     conn.close()
 
     return jsonify({'dados_aluno': dados_aluno})
+
 
 def busca_relatorio(where=None, value=None):
     """
@@ -502,6 +504,34 @@ def data_entrega():
     else:
         return jsonify({'error': 'Data não encontrada.'}), 404
 
-if __name__ == '__main__':
-    alunos = busca_aluno()
-    print(alunos)
+def desligar_aluno(nusp):
+    """
+    Atualiza o status do aluno para 'Inativo' na tabela alunos.
+
+    :param nusp: Número USP do aluno a ser desligado.
+    :return: JSON indicando sucesso ou falha da operação.
+    """
+    query = """
+        UPDATE alunos
+        SET status_aluno = 'Inativo'
+        WHERE nusp = %s
+    """
+    
+    conn = get_db_conn()
+    cur = conn.cursor()
+    
+    try:
+        cur.execute(query, (nusp,))  
+        conn.commit() 
+        
+        cur.close()
+        conn.close()
+        
+        return jsonify({"mensagem": "Aluno desligado com sucesso!"}), 200
+    except Exception as e:
+        
+        conn.rollback()  
+        cur.close()
+        conn.close()
+        
+        return jsonify({"error": f"Erro ao desligar o aluno: {str(e)}"}), 500
