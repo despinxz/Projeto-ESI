@@ -1,16 +1,16 @@
 INSERT INTO professores (nusp, nome, senha) VALUES (1, 'Dr. Silva', 'senha123');
 INSERT INTO professores (nusp, nome, senha) VALUES (2, 'Dr. Souza', 'senha123');
 
-INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, status_aluno) 
-VALUES (123456, 'Carlos', 'carlos@dominio.com', 'senha123', '1995-06-12', '123456789', 'São Paulo', 'Brasileiro', 'http://lattes.carlos.com', 'Ativo');
-INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, status_aluno) 
-VALUES (789101, 'Ana', 'ana@dominio.com', 'senha123', '1996-07-23', '987654321', 'Rio de Janeiro', 'Brasileira', 'http://lattes.ana.com', 'Ativo');
-INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, status_aluno) 
-VALUES (654321, 'João', 'joao@dominio.com', 'senha123', '1994-04-10', '123789456', 'Belo Horizonte', 'Brasileiro', 'http://lattes.joao.com', 'Ativo');
-INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, status_aluno) 
-VALUES (112233, 'Maria', 'maria@dominio.com', 'senha123', '1997-08-19', '456123789', 'Curitiba', 'Brasileira', 'http://lattes.maria.com', 'Inativo');
-INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, status_aluno) 
-VALUES (445566, 'Pedro', 'pedro@dominio.com', 'senha123', '1995-12-25', '321654987', 'São Paulo', 'Brasileiro', 'http://lattes.pedro.com', 'Inativo');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, orientador, status_aluno) 
+VALUES (123456, 'Carlos', 'carlos@dominio.com', 'senha123', '1995-06-12', '123456789', 'São Paulo', 'Brasileiro', 'http://lattes.carlos.com', 1, 'Ativo');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, orientador, status_aluno) 
+VALUES (789101, 'Ana', 'ana@dominio.com', 'senha123', '1996-07-23', '987654321', 'Rio de Janeiro', 'Brasileira', 'http://lattes.ana.com', 2,'Ativo');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, orientador, status_aluno) 
+VALUES (654321, 'João', 'joao@dominio.com', 'senha123', '1994-04-10', '123789456', 'Belo Horizonte', 'Brasileiro', 'http://lattes.joao.com', 2, 'Ativo');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, orientador, status_aluno) 
+VALUES (112233, 'Maria', 'maria@dominio.com', 'senha123', '1997-08-19', '456123789', 'Curitiba', 'Brasileira', 'http://lattes.maria.com', 1,'Inativo');
+INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, orientador, status_aluno) 
+VALUES (445566, 'Pedro', 'pedro@dominio.com', 'senha123', '1995-12-25', '321654987', 'São Paulo', 'Brasileiro', 'http://lattes.pedro.com', 2,'Inativo');
 
 INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
 VALUES ('Relatório teste 1', 'Texto para o primeiro relatório de teste.', 'Pesquisas realizadas pelo aluno.', 'Observações do relatório.', 'Sim', '2022-10-10 11:30:30', 'Aguardando', 'Aguardando', 'Parecer ainda não enviado.', 'Parecer ainda não enviado.', 123456, 1, 'S', 'S', 'S');

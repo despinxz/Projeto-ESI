@@ -24,7 +24,12 @@ CREATE TABLE alunos (
   local_nasc VARCHAR(20) NOT NULL,
   nacionalidade VARCHAR(20) NOT NULL,
   lattes VARCHAR(50) NOT NULL,
-  status_aluno status_aluno
+  orientador INT NOT NULL,
+  status_aluno status_aluno,
+
+  CONSTRAINT fk_orientador
+    FOREIGN KEY (orientador) 
+    REFERENCES professores(nusp)
 );
 
 CREATE TABLE cursos (
@@ -36,6 +41,7 @@ CREATE TABLE cursos (
   data_aprov_exam_qual DATE NOT NULL,
   data_aprov_exam_prof DATE NOT NULL,
   data_limite DATE NOT NULL,
+  ativo BOOLEAN NOT NULL,
   
   FOREIGN KEY (aluno)REFERENCES alunos(nusp),
   FOREIGN KEY (orientador) REFERENCES professores(nusp)

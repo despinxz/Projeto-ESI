@@ -60,6 +60,7 @@ def cadastro():
                 'local_nasc': request.form.get('local_nasc'),
                 'nacionalidade': request.form.get('nacionalidade'),
                 'lattes': request.form.get('lattes'),
+                'orientador': request.form.get('orientador')
             })
         elif tipo == 'professor':
             dados['nusp'] = request.form.get('nusp')
