@@ -82,11 +82,10 @@ CREATE TABLE relatorios (
   escrita CHAR(1) NOT NULL,
   aval CHAR(1) NOT NULL,
   publicados CHAR(1) NOT NULL,
-
+  data_limite DATE,
   CONSTRAINT fk_aluno
     FOREIGN KEY (aluno)
     REFERENCES alunos(nusp),
-  
   CONSTRAINT fk_orientador
     FOREIGN KEY (orientador) 
     REFERENCES professores(nusp)

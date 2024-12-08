@@ -15,6 +15,10 @@ def tabela_relatorios(nusp):
 def detalhes_relatorio(id):
     return render_template('detalhes_relatorio_aluno.html', relatorio_id=id)
 
+@aluno.route('/editar_relatorio/<id>')
+def editar_relatorio(id):
+    return render_template('editar_relatorio_aluno.html', relatorio_id=id)
+
 @aluno.route('/formulario/<nusp>')
 def render_forms_relatorio(nusp):
     return render_template('formulario_relatorio_aluno.html', nusp=nusp)
@@ -22,6 +26,11 @@ def render_forms_relatorio(nusp):
 @aluno.route('/relatorios/<nusp>', methods=['GET'])
 def get_relatorios_aluno(nusp):
     results = conn_bd.busca_relatorio(where="aluno", value=nusp)
+    return results
+
+@aluno.route('/detalhes_relatorio/<id>', methods=['GET'])
+def get_detalhes_relatorio(id):
+    results = conn_bd.busca_relatorio(where="id", value=id)
     return results
 
 @aluno.route('/data_entrega', methods=['GET'])
@@ -40,9 +49,11 @@ def forms_relatorio(nusp):
     escrita = dados.get('escrita')
     aval = dados.get('aval')
     publicados = dados.get('publicados')
+    data_limite = dados.get('data_limite')
 
-    sucesso = conn_bd.inserir_relatorio(nusp, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados, titulo="Titulo")
+    sucesso = conn_bd.inserir_relatorio(nusp, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados, titulo="Titulo", data_limite=data_limite)
     if sucesso:
         return {"message": "Relatório enviado com sucesso!"}, 200
     else:
         return {"error": "Erro ao salvar relatório."}, 500
+    

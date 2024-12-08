@@ -149,14 +149,15 @@
 </head>
 <body>
     <header>
-        <ul>
-            <li>
-                <a href="{{ url_for('feedback', nusp=nusp) }}">Feedbacks</a>
-            </li>
-        </ul>
         <div id="data-limite" style="position: absolute; right: 1rem; top: 1rem; font-weight: bold;"></div>
     </header>
     
+    <section class="disclaimer">
+        <p>
+            <strong>Atenção:</strong> Apenas os campos preenchidos serão atualizados na tabela. Os campos deixados em branco serão ignorados.
+        </p>
+    </section>
+
     <section class="title">
         <h1>
             Relatório Semestral de Aluno Regular
@@ -236,46 +237,39 @@
             </ul>
         </form>
     </section>
+
     <section>
-        <button>
-            Enviar relatório
-        </button>
+        <button>Enviar relatório</button>
     </section>
     <script>
-        const nusp = "{{ nusp }}";
-    
+
         function enviarRelatorio(event) {
             event.preventDefault();
-    
-            const atividades_resp = document.getElementById('atividades_resp').value.trim();
-            const pesquisas_resp = document.getElementById('pesquisas_resp').value.trim();
-            const observacoes_resp = document.getElementById('obsercacoes_resp').value.trim();
-            const dificuldade = document.querySelector('input[name="dificuldade"]:checked') ? 
-                               document.querySelector('input[name="dificuldade"]:checked').id : null;
-            const escrita = document.querySelector('input[name="escrita"]:checked');
-            const aval = document.querySelector('input[name="aval"]:checked');
-            const publicados = document.querySelector('input[name="publicados"]:checked');
-            const data_limite = document.getElementById('data-limite').textContent.replace('Data limite: ', '').trim();
-    
-            if (!atividades_resp || !pesquisas_resp || !observacoes_resp || !dificuldade || !escrita || !aval || !publicados){
-                alert('Por favor, preencha todas as informações.');
-                return;
-            }
-            
-            const dadosRelatorio = {
-                nusp,
-                atividades_resp,
-                pesquisas_resp,
-                observacoes_resp,
-                dificuldade,
-                escrita: escrita.id,
-                aval: aval.id,
-                publicados: publicados.id,
-                data_limite
-            };
+
+            const campos = [
+                { id: 'atividades_resp', chave: 'atividades' },
+                { id: 'pesquisas_resp', chave: 'pesquisas' },
+                { id: 'obsercacoes_resp', chave: 'observacoes' },
+                { id: 'data_atual_lattes_resp', chave: 'data_lattes' }
+            ];
+
+            const dadosRelatorio = { nusp };
+
+            campos.forEach(({ id, chave }) => {
+                const valor = document.getElementById(id).value.trim();
+                if (valor) dadosRelatorio[chave] = valor;
+            });
+
+            const dificuldade = document.querySelector('input[name="dificuldade"]:checked');
+            if (dificuldade) dadosRelatorio.dificuldade = dificuldade.id;
+
+            ['escrita', 'aval', 'publicados'].forEach((grupo) => {
+                const selecionado = document.querySelector(`input[name="${grupo}"]:checked`);
+                if (selecionado) dadosRelatorio[grupo] = selecionado.id;
+            });
 
             const urlRelatorio = "{{ url_for('aluno.forms_relatorio', nusp=nusp) }}";
-    
+
             fetch(urlRelatorio, {
                 method: 'POST',
                 headers: {
@@ -283,50 +277,43 @@
                 },
                 body: JSON.stringify(dadosRelatorio)
             })
-            .then(response => {
-                if (response.ok) {
-                    alert('Relatório enviado com sucesso!');
-                    const url = "{{ url_for('aluno.index', nusp='') }}" + nusp
-                    window.location.href = url; 
-                } else {
-                    throw new Error('Erro ao enviar relatório');
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert('Ocorreu um erro ao enviar o relatório. Tente novamente.');
-            });
+                .then((response) => {
+                    if (response.ok) {
+                        alert('Relatório enviado com sucesso!');
+                        const url = "{{ url_for('aluno.index', nusp='') }}" + nusp;
+                        window.location.href = url;
+                    } else {
+                        throw new Error('Erro ao enviar relatório');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Erro:', error);
+                    alert('Ocorreu um erro ao enviar o relatório. Tente novamente.');
+                });
         }
-    
+
         document.querySelector('button').addEventListener('click', enviarRelatorio);
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Função para buscar a data limite
             function data_entrega() {
-                return fetch('/aluno/data_entrega') 
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Erro ao buscar a data de entrega');
-                        }
+                return fetch('/aluno/data_entrega')
+                    .then((response) => {
+                        if (!response.ok) throw new Error('Erro ao buscar a data de entrega');
                         return response.json();
                     })
-                    .then(result => result.date) 
-                    .catch(error => {
+                    .then((result) => result.date)
+                    .catch((error) => {
                         console.error('Erro ao buscar data limite:', error);
                         return null;
                     });
             }
 
-            data_entrega().then(date => {
+            data_entrega().then((date) => {
                 if (date) {
-                    const dataLimiteElement = document.getElementById('data-limite');
-                    dataLimiteElement.textContent = `Data limite: ${new Date(date).toLocaleDateString('pt-BR')}`;
+                    document.getElementById('data-limite').textContent = `Data limite: ${new Date(date).toLocaleDateString('pt-BR')}`;
                 }
             });
         });
     </script>
-    
-    
-    
-
 </body>
+</html>

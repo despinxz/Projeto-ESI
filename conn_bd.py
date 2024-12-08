@@ -15,7 +15,7 @@ def get_db_conn():
         host='localhost',
         database='posgraduacao',
         user='postgres',
-        password='postgres'
+        password='15262435'
     )
     return conn
 
@@ -238,7 +238,8 @@ def busca_relatorio(where=None, value=None):
             'orientador': relatorio[12],
             'escrita': relatorio[13],
             'aval': relatorio[14],
-            'publicados': relatorio[15]
+            'publicados': relatorio[15],
+            'data_limite': relatorio[16]
         })
     
     return jsonify({'relatorios': relatorios})
@@ -328,7 +329,7 @@ def salvar_parecer_ccp(nusp, parecer, nivel):
 
     return True
 
-def inserir_relatorio(nusp, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados, titulo):
+def inserir_relatorio(nusp, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados, titulo, data_limite):
     """
     Insere um novo relatório no banco de dados.
 
@@ -342,8 +343,8 @@ def inserir_relatorio(nusp, atividades_resp, pesquisas_resp, observacoes_resp, d
     :param publicados: Resposta sobre artigos aceitos ou publicados
     """
     query = """
-    INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados) 
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    INSERT INTO relatorios (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, nota_professor, nota_ccp, parecer_professor, parecer_ccp, aluno, orientador, escrita, aval, publicados, data_limite) 
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
 
     conn = get_db_conn()
@@ -363,7 +364,7 @@ def inserir_relatorio(nusp, atividades_resp, pesquisas_resp, observacoes_resp, d
     else:
         dificuldade = 'Não'
 
-    cur.execute(query, (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, "Aguardando", "Aguardando", "Parecer ainda não enviado", "Parecer ainda não enviado", nusp, orientador, escrita, aval, publicados))
+    cur.execute(query, (titulo, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, data_envio, "Aguardando", "Aguardando", "Parecer ainda não enviado", "Parecer ainda não enviado", nusp, orientador, escrita, aval, publicados, data_limite))
 
     conn.commit()
     cur.close()
@@ -531,3 +532,4 @@ def desligar_aluno(nusp):
         conn.close()
         
         return jsonify({"error": f"Erro ao desligar o aluno: {str(e)}"}), 500
+    
