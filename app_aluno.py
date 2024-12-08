@@ -56,4 +56,22 @@ def forms_relatorio(nusp):
         return {"message": "Relatório enviado com sucesso!"}, 200
     else:
         return {"error": "Erro ao salvar relatório."}, 500
-    
+
+@aluno.route('/enviar_edicao_relatorio/<id>', methods=['PUT'])
+def enviar_edicao_relatorio(id):
+    dados = request.json
+
+    atividades_resp = dados.get('atividades_resp')
+    pesquisas_resp = dados.get('pesquisas_resp')
+    observacoes_resp = dados.get('observacoes_resp')
+    dificuldade = dados.get('dificuldade')
+    escrita = dados.get('escrita')
+    aval = dados.get('aval')
+    publicados = dados.get('publicados')
+    data_limite = dados.get('data_limite')
+
+    sucesso = conn_bd.editar_relatorio(id, atividades_resp, pesquisas_resp, observacoes_resp, dificuldade, escrita, aval, publicados, titulo="Titulo", data_limite=data_limite)
+    if sucesso:
+        return {"message": "Relatório enviado com sucesso!"}, 200
+    else:
+        return {"error": "Erro ao salvar relatório."}, 500

@@ -532,4 +532,59 @@ def desligar_aluno(nusp):
         conn.close()
         
         return jsonify({"error": f"Erro ao desligar o aluno: {str(e)}"}), 500
-    
+
+def editar_relatorio(id, atividades_resp="", pesquisas_resp="", observacoes_resp="", dificuldade="", escrita="", aval="", publicados="", titulo="", data_limite=""):
+    """
+    Atualiza um relatório existente no banco de dados com base no ID. 
+    Apenas os parâmetros fornecidos (não vazios) serão atualizados.
+
+    :param id: ID do relatório a ser atualizado
+    :param atividades_resp: Respostas sobre atividades
+    :param pesquisas_resp: Respostas sobre pesquisas
+    :param observacoes_resp: Observações adicionais
+    :param dificuldade: Dificuldade enfrentada
+    :param escrita: Resposta sobre artigos em fase de escrita
+    :param aval: Resposta sobre artigos submetidos e em avaliação
+    :param publicados: Resposta sobre artigos aceitos ou publicados
+    :param titulo: Título do relatório
+    :param data_limite: Data limite para entrega
+    """
+    conn = get_db_conn()
+    cur = conn.cursor()
+
+    data_envio = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    # Mapeia os parâmetros em pares coluna=valor
+    campos = {
+        "atividades_resp": atividades_resp,
+        "pesquisas_resp": pesquisas_resp,
+        "observacoes_resp": observacoes_resp,
+        "dificuldade": dificuldade,
+        "data_envio": data_envio,
+        "escrita": escrita,
+        "aval": aval,
+        "publicados": publicados,
+        "titulo": titulo,
+        "data_limite": data_limite
+    }
+
+    # Filtra os campos não vazios
+    campos_nao_vazios = {coluna: valor for coluna, valor in campos.items() if valor}
+
+    if not campos_nao_vazios:
+        return jsonify({"error": "Nenhum campo para atualizar."}), 400
+
+    # Constrói a query dinamicamente
+    set_clause = ", ".join([f"{coluna} = %s" for coluna in campos_nao_vazios.keys()])
+    query = f"UPDATE relatorios SET {set_clause} WHERE id = %s"
+
+    # Executa a query com os valores
+    valores = list(campos_nao_vazios.values()) + [id]
+    cur.execute(query, valores)
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return jsonify({"message": "Relatório atualizado com sucesso!"}), 200
+

@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enviar Relatório</title>
+    <title>Editar Relatório</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
     <style>
         body{
             box-sizing: border-box;
@@ -158,53 +157,9 @@
         </p>
     </section>
 
-    <section class="title">
-        <h1>
-            Relatório Semestral de Aluno Regular
-        </h1>
-    </section>
-    <section class="question">
-        <p>
-            Referente à produção de artigos durante o curso:
-        </p>
-        <div class="choice-table" >
-            <div class="labels">
-                <p>Quantidade</p>
-                <p>Artigos em fase de escrita</p>
-                <p>Artigos submetidos e em avaliação</p>
-                <p>Artigos aceitos ou publicados</p>
-            </div>
-            <div class="awnsers">
-                <p>0</p>
-                <p>1</p>
-                <p>2</p>
-                <p>3 ou mais</p>
-                <input type="radio" name="escrita" id="esc-0">
-                <input type="radio" name="escrita" id="esc-1">
-                <input type="radio" name="escrita" id="esc-2">
-                <input type="radio" name="escrita" id="esc-3">
-                <input type="radio" name="aval" id="aval-0">
-                <input type="radio" name="aval" id="aval-1">
-                <input type="radio" name="aval" id="aval-2">
-                <input type="radio" name="aval" id="aval-3">
-                <input type="radio" name="publicados" id="publ-0">
-                <input type="radio" name="publicados" id="publ-1">
-                <input type="radio" name="publicados" id="publ-2">
-                <input type="radio" name="publicados" id="publ-3">
-            </div>
-        </div>
-    </section>
-    <section class="question">
-        <p>
-            Data da última atualização do lattes:
-        </p>
-        <textarea name="data_atual_lattes_resp" id="data_atual_lattes_resp"></textarea>
-    </section>
     <section class="question">
         <p>
             Relate aqui as atividades ou eventos acadêmicos que você participou no semestre:
-            <br>
-            (congresso, visita técnica, intercâmbio, estágio PAE, etc)
         </p>
         <textarea name="atividades_resp" id="atividades_resp"></textarea>
     </section>
@@ -218,101 +173,71 @@
         <p>
             Você tem algo adicional a declarar para a CCP - PPgSI que considera importante para a sua avaliação?
         </p>
-        <textarea name="obsercacoes_resp" id="obsercacoes_resp"></textarea>
+        <textarea name="observacoes_resp" id="observacoes_resp"></textarea>
     </section>
     <section class="question">
         <p>
             Você está enfrentando alguma dificuldade que precisa de apoio da coordenação do curso?
         </p>
-        <form action="">
-            <ul>
-                <li>
-                    <input type="radio" name="dificuldade" id="diff_sim">
-                    <label for="dificuldade_sim">Sim</label>
-                </li>
-                <li>
-                    <input type="radio" name="dificuldade" id="diff_nao">
-                    <label for="dificuldade_nao">Não</label>
-                </li>
-            </ul>
-        </form>
+        <ul>
+            <li>
+                <input type="radio" name="dificuldade" id="dificuldade_sim" value="Sim">
+                <label for="dificuldade_sim">Sim</label>
+            </li>
+            <li>
+                <input type="radio" name="dificuldade" id="dificuldade_nao" value="Não">
+                <label for="dificuldade_nao">Não</label>
+            </li>
+        </ul>
     </section>
 
     <section>
-        <button>Enviar relatório</button>
+        <button id="editar-relatorio-btn">Editar Relatório</button>
     </section>
-    <script>
 
-        function enviarRelatorio(event) {
+    <script>
+        document.getElementById('editar-relatorio-btn').addEventListener('click', function(event) {
             event.preventDefault();
 
-            const campos = [
-                { id: 'atividades_resp', chave: 'atividades' },
-                { id: 'pesquisas_resp', chave: 'pesquisas' },
-                { id: 'obsercacoes_resp', chave: 'observacoes' },
-                { id: 'data_atual_lattes_resp', chave: 'data_lattes' }
-            ];
+            const idRelatorio = window.location.pathname.split('/').pop(); // Obtém o ID da URL
+            const urlRelatorio = `/aluno/enviar_edicao_relatorio/${idRelatorio}`;
 
-            const dadosRelatorio = { nusp };
-
-            campos.forEach(({ id, chave }) => {
-                const valor = document.getElementById(id).value.trim();
-                if (valor) dadosRelatorio[chave] = valor;
-            });
-
-            const dificuldade = document.querySelector('input[name="dificuldade"]:checked');
-            if (dificuldade) dadosRelatorio.dificuldade = dificuldade.id;
-
-            ['escrita', 'aval', 'publicados'].forEach((grupo) => {
-                const selecionado = document.querySelector(`input[name="${grupo}"]:checked`);
-                if (selecionado) dadosRelatorio[grupo] = selecionado.id;
-            });
-
-            const urlRelatorio = "{{ url_for('aluno.forms_relatorio', nusp=nusp) }}";
+            const dadosRelatorio = {
+                atividades_resp: document.getElementById('atividades_resp').value.trim(),
+                pesquisas_resp: document.getElementById('pesquisas_resp').value.trim(),
+                observacoes_resp: document.getElementById('observacoes_resp').value.trim(),
+                dificuldade: document.querySelector('input[name="dificuldade"]:checked')?.value || ""
+            };
 
             fetch(urlRelatorio, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(dadosRelatorio)
             })
-                .then((response) => {
-                    if (response.ok) {
-                        alert('Relatório enviado com sucesso!');
-                        const url = "{{ url_for('aluno.index', nusp='') }}" + nusp;
-                        window.location.href = url;
-                    } else {
-                        throw new Error('Erro ao enviar relatório');
-                    }
-                })
-                .catch((error) => {
-                    console.error('Erro:', error);
-                    alert('Ocorreu um erro ao enviar o relatório. Tente novamente.');
-                });
-        }
-
-        document.querySelector('button').addEventListener('click', enviarRelatorio);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            function data_entrega() {
-                return fetch('/aluno/data_entrega')
-                    .then((response) => {
-                        if (!response.ok) throw new Error('Erro ao buscar a data de entrega');
-                        return response.json();
-                    })
-                    .then((result) => result.date)
-                    .catch((error) => {
-                        console.error('Erro ao buscar data limite:', error);
-                        return null;
-                    });
-            }
-
-            data_entrega().then((date) => {
-                if (date) {
-                    document.getElementById('data-limite').textContent = `Data limite: ${new Date(date).toLocaleDateString('pt-BR')}`;
+            .then(response => {
+                if (response.ok) {
+                    alert('Relatório atualizado com sucesso!');
+                    location.reload(); // Recarrega a página
+                } else {
+                    alert('Erro ao atualizar o relatório. Verifique os dados e tente novamente.');
                 }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao processar a solicitação.');
             });
+        });
+
+        // Exibir data limite (opcional, dependendo da implementação no backend)
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/aluno/data_entrega')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('data-limite').textContent = `Data limite: ${new Date(data.date).toLocaleDateString('pt-BR')}`;
+                })
+                .catch(error => console.error('Erro ao carregar data limite:', error));
         });
     </script>
 </body>

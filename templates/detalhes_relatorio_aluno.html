@@ -113,8 +113,8 @@
                 const relatorio = data.relatorios[0];
 
                 document.getElementById('titulo').textContent = relatorio.titulo;
-                document.getElementById('atividades_academicas').textContent = relatorio.atividades_academicas;
-                document.getElementById('resumo_pesquisa').textContent = relatorio.resumo_pesquisa;
+                document.getElementById('atividades_academicas').textContent = relatorio.atividades_resp;
+                document.getElementById('resumo_pesquisa').textContent = relatorio.pesquisas_resp;
                 document.getElementById('data_envio').textContent = new Date(relatorio.data_envio).toLocaleDateString();
 
                 const notaProfessorEl = document.getElementById('nota_professor');
