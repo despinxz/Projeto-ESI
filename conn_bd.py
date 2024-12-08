@@ -380,11 +380,11 @@ def verificar_login(tipo, id, senha):
     cur = conn.cursor()
 
     if tipo == 'ccp':
-        query = f"SELECT * FROM ccp WHERE nusp = '{id}' AND senha = '{senha}'"
+        query = "SELECT * FROM ccp WHERE nusp = %s AND senha = %s"
     elif tipo == 'aluno':
-        query = f"SELECT * FROM alunos WHERE nusp = '{id}' AND senha = '{senha}'"
+        query = "SELECT * FROM alunos WHERE nusp = %s' AND senha = %s'"
     elif tipo == 'professor':
-        query = f"SELECT * FROM professores WHERE nusp = '{id}' AND senha = '{senha}'"
+        query = "SELECT * FROM professores WHERE nusp = %s AND senha = %s"
     
     try:
         cur.execute(query, (id, hash_password(senha)))
