@@ -1,7 +1,6 @@
 from flask import jsonify, flash
 import psycopg2
 from datetime import datetime
-import hashlib
 import json
 # import env
 
@@ -16,7 +15,7 @@ def get_db_conn():
         host='localhost',
         database='posgraduacao',
         user='postgres',
-        password='15262435'
+        password='postgres'
     )
     return conn
 
@@ -370,9 +369,6 @@ def inserir_relatorio(nusp, atividades_resp, pesquisas_resp, observacoes_resp, d
 
     return jsonify({"message": "Relatório adicionado com sucesso!"}), 201
 
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
-
 def verificar_login(tipo, id, senha):
     conn = get_db_conn()
     cur = conn.cursor()
@@ -385,7 +381,7 @@ def verificar_login(tipo, id, senha):
         query = f"SELECT * FROM professores WHERE nusp = '{id}' AND senha = '{senha}'"
     
     try:
-        cur.execute(query, (id, hash_password(senha)))
+        cur.execute(query, (id, senha))
         result = cur.fetchone()
 
         if result:
@@ -419,7 +415,7 @@ def cadastrar_usuario(tipo, dados):
                 return False
             
             cur.execute("INSERT INTO ccp (nusp, nome, senha) VALUES (%s, %s, %s)", 
-                        (dados['nusp'], dados['nome'], hash_password(dados['senha'])))
+                        (dados['nusp'], dados['nome'], dados['senha']))
 
         elif tipo == 'aluno':
             cur.execute("SELECT * FROM alunos WHERE nusp = %s", (dados['nusp'],))
@@ -431,7 +427,7 @@ def cadastrar_usuario(tipo, dados):
             cur.execute(""" 
                 INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, (dados['nusp'], dados['nome'], dados['email'], hash_password(dados['senha']),
+            """, (dados['nusp'], dados['nome'], dados['email'], dados['senha'],
                   dados['data_nasc'], dados['rg'], dados['local_nasc'], dados['nacionalidade'], dados['lattes']))
 
         elif tipo == 'professor':
@@ -442,7 +438,7 @@ def cadastrar_usuario(tipo, dados):
                 return False
 
             cur.execute("INSERT INTO professores (nusp, nome, senha) VALUES (%s, %s, %s)", 
-                        (dados['nusp'], dados['nome'], hash_password(dados['senha'])))
+                        (dados['nusp'], dados['nome'], dados['senha']))
 
         conn.commit()
         flash('Cadastro realizado com sucesso! Agora você pode fazer o login.', 'success')
