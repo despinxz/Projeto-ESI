@@ -460,10 +460,10 @@ def cadastrar_usuario(tipo, dados):
                 return False
 
             cur.execute(""" 
-                INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, orientador) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, orientador, status_aluno) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (dados['nusp'], dados['nome'], dados['email'], dados['senha'],
-                  dados['data_nasc'], dados['rg'], dados['local_nasc'], dados['nacionalidade'], dados['lattes'], dados['orientador']))
+                  dados['data_nasc'], dados['rg'], dados['local_nasc'], dados['nacionalidade'], dados['lattes'], dados['orientador'], 'Ativo'))
 
         elif tipo == 'professor':
             cur.execute("SELECT * FROM professores WHERE nusp = %s", (dados['nusp'],))

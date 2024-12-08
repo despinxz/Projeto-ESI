@@ -26,7 +26,6 @@ CREATE TABLE alunos (
   lattes VARCHAR(50) NOT NULL,
   orientador INT NOT NULL,
   status_aluno status_aluno,
-
   CONSTRAINT fk_orientador
     FOREIGN KEY (orientador) 
     REFERENCES professores(nusp)
@@ -42,7 +41,6 @@ CREATE TABLE cursos (
   data_aprov_exam_prof DATE NOT NULL,
   data_limite DATE NOT NULL,
   ativo BOOLEAN NOT NULL,
-  
   FOREIGN KEY (aluno)REFERENCES alunos(nusp),
   FOREIGN KEY (orientador) REFERENCES professores(nusp)
 );
@@ -56,7 +54,6 @@ CREATE TABLE cursos_disciplinas_aprovadas (
   id_curso INT NOT NULL,
   id_disciplina INT NOT NULL,
   PRIMARY KEY (id_curso, id_disciplina),
-
   FOREIGN KEY (id_curso) REFERENCES cursos(id),
   FOREIGN KEY (id_disciplina) REFERENCES disciplinas(id)
 );
@@ -64,9 +61,7 @@ CREATE TABLE cursos_disciplinas_aprovadas (
 CREATE TABLE cursos_disciplinas_reprovadas (
   id_curso INT NOT NULL,
   id_disciplina INT NOT NULL,
-
   PRIMARY KEY (id_curso, id_disciplina),
-
   FOREIGN KEY (id_curso) REFERENCES cursos(id),
   FOREIGN KEY (id_disciplina) REFERENCES disciplinas(id)
 );
