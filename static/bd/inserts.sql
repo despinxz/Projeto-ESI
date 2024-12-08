@@ -35,3 +35,10 @@ VALUES ('Relatório teste 9', 'Texto para o nono relatório de teste.', 'Pesquis
 
 INSERT INTO data_entrega_relatorio (data_entrega_relatorio)
 VALUES ('1995-06-12');
+
+INSERT INTO cursos (nome, id, aluno, orientador, data_matricula, data_aprov_exam_qual, data_aprov_exam_prof, data_limite, ativo) VALUES ('Mestrado', 1, 445566, 2, '2024-06-12', '2024-01-12', '2024-01-01', '2025-06-12', true);
+INSERT INTO cursos (nome, id, aluno, orientador, data_matricula, data_aprov_exam_qual, data_aprov_exam_prof, data_limite, ativo) VALUES ('Mestrado', 2, 112233, 2, '2024-06-12', '2024-01-12', '2024-01-01', '2025-06-12', true);
+INSERT INTO cursos (nome, id, aluno, orientador, data_matricula, data_aprov_exam_qual, data_aprov_exam_prof, data_limite, ativo) VALUES ('Doutorado', 3, 654321, 2, '2024-06-12', '2024-01-12', '2024-01-01', '2025-06-12', true);
+INSERT INTO cursos (nome, id, aluno, orientador, data_matricula, data_aprov_exam_qual, data_aprov_exam_prof, data_limite, ativo) VALUES ('Mestrado', 4, 789101, 2, '2021-06-12', '2021-01-12', '2021-01-01', '2023-12-01', false);
+INSERT INTO cursos (nome, id, aluno, orientador, data_matricula, data_aprov_exam_qual, data_aprov_exam_prof, data_limite, ativo) VALUES ('Doutorado', 5, 789101, 2, '2024-06-12', '2024-01-12', '2024-01-01', '2025-06-12', true);
+INSERT INTO cursos (nome, id, aluno, orientador, data_matricula, data_aprov_exam_qual, data_aprov_exam_prof, data_limite, ativo) VALUES ('Doutorado', 6, 123456, 2, '2024-06-12', '2024-01-12', '2024-01-01', '2025-06-12', true);

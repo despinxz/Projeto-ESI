@@ -36,6 +36,7 @@ CREATE TABLE cursos (
   data_aprov_exam_qual DATE NOT NULL,
   data_aprov_exam_prof DATE NOT NULL,
   data_limite DATE NOT NULL,
+  ativo BOOLEAN NOT NULL,
   
   FOREIGN KEY (aluno)REFERENCES alunos(nusp),
   FOREIGN KEY (orientador) REFERENCES professores(nusp)
