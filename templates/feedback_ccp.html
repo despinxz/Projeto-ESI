@@ -306,11 +306,11 @@
     </section>
 
     <script>
-        const relatorio_id = "{{ relatorio_id }}";  
+        const relatorio_id = window.location.pathname.split('/').pop();;  
 
         // Função para buscar os detalhes do aluno
         function fetchDetalhesAluno() {
-            etch(`/feedback_ccp/${relatorio_id}`)
+            fetch(`/feedback_ccp/${relatorio_id}`)
             .then(response => response.json())
             .then(data => {
                 const detalhes = data.detalhes_aluno[0];

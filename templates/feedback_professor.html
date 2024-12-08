@@ -285,7 +285,7 @@
     </section>
 
     <script>
-        const relatorio_id = "{{ relatorio_id }}";  
+        const relatorio_id = window.location.pathname.split('/').pop();;  
 
         // Função para buscar os detalhes do aluno
         function fetchDetalhesAluno() {
