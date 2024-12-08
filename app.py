@@ -12,7 +12,6 @@ app.register_blueprint(ccp, url_prefix='/ccp')
 app.register_blueprint(professor, url_prefix='/professor')
 app.register_blueprint(aluno, url_prefix='/aluno')
 
-
 @app.route('/feedback/<nusp>')
 def feedback(nusp):
     return render_template('feedback.html', nusp=nusp)
@@ -38,7 +37,11 @@ def login():
            
     return render_template('login.html')
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
+def index():
+    return redirect(url_for('login'))
+
+@app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
         tipo = request.form.get('tipo')
