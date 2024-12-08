@@ -38,10 +38,7 @@ def get_detalhes_aluno(nusp):
                            nusp=aluno['nusp'],
                            nome=aluno['nome'],
                            data_envio=aluno['data_envio'],
-                           curso=aluno['curso'],
                            lattes=aluno['lattes'],
-                           aprovacoes=aluno['aprovacoes'],
-                           reprovacoes=aluno['reprovacoes'],
                            atividades_academicas=aluno['atividades_academicas'],
                            resumo_pesquisa=aluno['resumo_pesquisa'])
 

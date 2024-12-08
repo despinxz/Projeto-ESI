@@ -35,3 +35,5 @@ VALUES ('Relatório teste 9', 'Texto para o nono relatório de teste.', 'Pesquis
 
 INSERT INTO data_entrega_relatorio (data_entrega_relatorio)
 VALUES ('1995-06-12');
+
+SELECT * FROM alunos;

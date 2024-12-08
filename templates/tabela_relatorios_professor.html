@@ -42,7 +42,7 @@
     <script>
         const nusp = window.location.pathname.split('/').pop();
 
-        fetch(`professor/relatorios/${nusp}`)
+        fetch(`/professor/tabela_relatorios/relatorios/${nusp}`)
             .then(response => response.json())
             .then(data => {
                 const tabelaBody = document.getElementById('tabelaBody');

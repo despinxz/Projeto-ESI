@@ -219,7 +219,7 @@ def busca_aluno(where=None, value=None):
             'local_nasc': dados[6],
             'nacionalidade': dados[7],
             'lattes': dados[8],
-            'status_aluno': dados[9],
+            'status_aluno': dados[10],
             'baixo_desempenho': baixo_desempenho,
             'ultimas_notas': notas  # Inclui as últimas duas notas no JSON
         })
@@ -278,7 +278,7 @@ def busca_relatorio(where=None, value=None):
 
 def busca_detalhes_aluno(where=None, value=None):
     query = """
-    SELECT a.nome, a.nusp, r.data_envio, a.curso, a.lattes, a.aprovacoes, a.reprovacoes, r.parecer_professor, r.atividades_academicas, r.resumo_pesquisa 
+    SELECT a.nome, a.nusp, r.data_envio, a.lattes, r.parecer_professor, r.atividades_resp, r.pesquisas_resp
     FROM alunos a LEFT JOIN relatorios r ON a.nusp = r.aluno"""
     if where: 
         query += f" WHERE a.nusp = {value}"
@@ -304,13 +304,10 @@ def busca_detalhes_aluno(where=None, value=None):
         'nome': detalhe_aluno[0],
         'nusp': detalhe_aluno[1],
         'data_envio': detalhe_aluno[2],
-        'curso': detalhe_aluno[3],
-        'lattes': detalhe_aluno[4],
-        'aprovacoes': detalhe_aluno[5],
-        'reprovacoes': detalhe_aluno[6],
-        'parecer_professor': detalhe_aluno[7],
-        'atividades_academicas': detalhe_aluno[8],
-        'resumo_pesquisa': detalhe_aluno[9]
+        'lattes': detalhe_aluno[3],
+        'parecer_professor': detalhe_aluno[4],
+        'atividades_academicas': detalhe_aluno[5],
+        'resumo_pesquisa': detalhe_aluno[6]
     })
 
     return (detalhes_aluno)
@@ -490,8 +487,9 @@ def cadastrar_usuario(tipo, dados):
 def atualizar_data_relatorio(nova_data):
     query = f"""
         UPDATE data_entrega_relatorio
-        SET data_entrega_relatorio = DATE('{nova_data}')
-        WHERE id = '1'
+        SET data_entrega_relatorio = DATE('{nova_data}') + INTERVAL '1 day'
+        WHERE id = '1';
+
     """
     try:
         conn = get_db_conn()  

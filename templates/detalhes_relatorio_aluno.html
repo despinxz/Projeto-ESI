@@ -67,13 +67,14 @@
             <div class="col-md-7 left-section">
                 <h2 id="titulo">Carregando...</h2>
                 <p id="data_envio">Carregando...</p>
-
+                
                 <h4>Atividades acadêmicas</h4>
                 <p id="atividades_academicas">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet turpis pellentesque, feugiat neque eget, facilisis sapien.</p>
                 
                 <h4>Resumo da pesquisa</h4>
                 <p id="resumo_pesquisa">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet turpis pellentesque, feugiat neque eget, facilisis sapien.</p>
 
+                <p id="data_limite">Data limite de envio: Carregando...</p>
             </div>
 
             <!-- Seção da direita (Notas e Pareceres) -->
@@ -116,6 +117,8 @@
                 document.getElementById('atividades_academicas').textContent = relatorio.atividades_resp;
                 document.getElementById('resumo_pesquisa').textContent = relatorio.pesquisas_resp;
                 document.getElementById('data_envio').textContent = new Date(relatorio.data_envio).toLocaleDateString();
+                document.getElementById('data_limite').textContent = 
+    `Data limite de envio: ${new Date(relatorio.data_limite).toLocaleDateString()}`;
 
                 const notaProfessorEl = document.getElementById('nota_professor');
                 const notaCCPEl = document.getElementById('nota_ccp');
