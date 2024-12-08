@@ -139,6 +139,38 @@ def num_materias_aprovadas(nusp, curso):
     
     return jsonify({'dados': dados})
 
+def busca_orientador(nusp_aluno=None):
+    """
+    Realiza busca na tabela de cursos e verifica qual é o orientador do aluno com base no nusp do aluno
+
+    :param where: Nusp do aluno
+    :param value: Valor a ser filtrado
+    :return: Resultado da query
+    """
+
+    if not nusp_aluno:
+        return jsonify({'error': 'Número USP do aluno é obrigatório'}), 400
+    
+    query = """
+        SELECT orientador
+        FROM alunos a
+        WHERE a.nusp = %s
+    """
+    
+    conn = get_db_conn()
+    cur = conn.cursor()
+    
+    cur.execute(query, (nusp_aluno,))
+    result = cur.fetchone()  # Assume que o orientador é retornado na primeira coluna
+    
+    cur.close()
+    conn.close()
+    
+    if result:
+        return result[0]  # Retorna o orientador encontrado
+    else:
+        return None  # Caso não encontre orientador
+
 def busca_aluno(where=None, value=None):
     """
     Realiza busca na tabela de aluno e verifica o desempenho com base nos relatórios enviados.
@@ -351,7 +383,7 @@ def inserir_relatorio(nusp, atividades_resp, pesquisas_resp, observacoes_resp, d
     cur = conn.cursor()
 
     dados_aluno = busca_aluno(where='nusp', value=nusp)
-    orientador = 1
+    orientador = busca_orientador(nusp_aluno=nusp)
 
     data_envio = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -428,10 +460,10 @@ def cadastrar_usuario(tipo, dados):
                 return False
 
             cur.execute(""" 
-                INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, orientador) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (dados['nusp'], dados['nome'], dados['email'], dados['senha'],
-                  dados['data_nasc'], dados['rg'], dados['local_nasc'], dados['nacionalidade'], dados['lattes']))
+                  dados['data_nasc'], dados['rg'], dados['local_nasc'], dados['nacionalidade'], dados['lattes'], dados['orientador']))
 
         elif tipo == 'professor':
             cur.execute("SELECT * FROM professores WHERE nusp = %s", (dados['nusp'],))
