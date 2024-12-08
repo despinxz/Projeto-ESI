@@ -379,7 +379,7 @@ def verificar_login(tipo, id, senha):
     if tipo == 'ccp':
         query = "SELECT * FROM ccp WHERE nusp = %s AND senha = %s"
     elif tipo == 'aluno':
-        query = "SELECT * FROM alunos WHERE nusp = %s' AND senha = %s'"
+        query = "SELECT * FROM alunos WHERE nusp = %s AND senha = %s"
     elif tipo == 'professor':
         query = "SELECT * FROM professores WHERE nusp = %s AND senha = %s"
     
