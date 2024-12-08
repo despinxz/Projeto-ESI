@@ -43,9 +43,9 @@ def get_info_aluno(nusp):
     results = conn_bd.busca_aluno(where='nusp', value=nusp)
     return results
 
-@ccp.route('/feedback_ccp/<nusp_aluno>', methods=['GET'])
-def get_detalhes_aluno(nusp_aluno):
-    detalhes_aluno = conn_bd.busca_detalhes_aluno(where="nusp", value=nusp_aluno)
+@ccp.route('/feedback_ccp/<relatorio_id>', methods=['GET'])
+def get_relatorio_feedback(relatorio_id):
+    detalhes_aluno = conn_bd.busca_detalhes_aluno(value=relatorio_id)
 
     if not detalhes_aluno:
         return jsonify({"error": "Aluno não encontrado"}), 404
@@ -61,8 +61,8 @@ def get_detalhes_aluno(nusp_aluno):
                            atividades_academicas=aluno['atividades_academicas'],
                            resumo_pesquisa=aluno['resumo_pesquisa'])
 
-@ccp.route('/feedback_ccp/<nusp_aluno>/save', methods=['POST'])
-def salvar_parecer(nusp_aluno):
+@ccp.route('/feedback_ccp/<relatorio_id>/save', methods=['POST'])
+def salvar_parecer(relatorio_id):
     dados = request.get_json()
     parecer = dados.get('parecer_resp')
     nivel = dados.get('nivel')
@@ -70,7 +70,7 @@ def salvar_parecer(nusp_aluno):
     if not parecer or not nivel:
         return jsonify({"error": "Dados incompletos"}), 400
 
-    if conn_bd.salvar_parecer_ccp(nusp_aluno, parecer, nivel):
+    if conn_bd.salvar_parecer_ccp(relatorio_id, parecer, nivel):
         return jsonify({"sucesso": True, "mensagem": "Parecer salvo com sucesso!"}), 200
     else:
         return jsonify({"error": "Erro ao salvar parecer"}), 500

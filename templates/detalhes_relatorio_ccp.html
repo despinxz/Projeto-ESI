@@ -132,7 +132,7 @@
                     const feedbackButton = document.getElementById('feedbackButton');
                     feedbackButton.style.display = 'block';
                     feedbackButton.addEventListener('click', () => {
-                        const url = "{{ url_for('ccp.get_detalhes_aluno', nusp_aluno='') }}" + relatorio.aluno
+                        const url = "{{ url_for('ccp.get_relatorio_feedback', relatorio_id='') }}" + relatorio.id
                         window.location.href = url;
                     });
                 }

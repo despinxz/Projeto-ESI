@@ -25,9 +25,9 @@ def get_detalhes_relatorio(relatorio_id):
     results = conn_bd.busca_relatorio(where='id', value=relatorio_id)
     return results
 
-@professor.route('/feedback_professor/<nusp_aluno>', methods=['GET'])
-def get_detalhes_aluno(nusp):
-    detalhes_aluno = conn_bd.busca_detalhes_aluno(where="nusp_aluno", value=nusp)
+@professor.route('/feedback_professor/<relatorio_id>', methods=['GET'])
+def get_relatorio_feedback(relatorio_id):
+    detalhes_aluno = conn_bd.busca_detalhes_aluno(value=relatorio_id)
 
     if not detalhes_aluno:
         return jsonify({"error": "Aluno não encontrado"}), 404
@@ -40,10 +40,11 @@ def get_detalhes_aluno(nusp):
                            data_envio=aluno['data_envio'],
                            lattes=aluno['lattes'],
                            atividades_academicas=aluno['atividades_academicas'],
-                           resumo_pesquisa=aluno['resumo_pesquisa'])
+                           resumo_pesquisa=aluno['resumo_pesquisa']
+                           )
 
-@professor.route('/feedback_professor/<nusp>/save', methods=['POST'])
-def salvar_parecer(nusp):
+@professor.route('/feedback_professor/<relatorio_id>/save', methods=['POST'])
+def salvar_parecer(relatorio_id):
     dados = request.get_json()
     parecer = dados.get('parecer_resp')
     nivel = dados.get('nivel')
@@ -51,7 +52,7 @@ def salvar_parecer(nusp):
     if not parecer or not nivel:
         return jsonify({"error": "Dados incompletos"}), 400
 
-    if conn_bd.salvar_parecer_prof(nusp, parecer, nivel):
+    if conn_bd.salvar_parecer_prof(relatorio_id, parecer, nivel):
         return jsonify({"sucesso": True, "mensagem": "Parecer salvo com sucesso!"}), 200
     else:
         return jsonify({"error": "Erro ao salvar parecer"}), 500
