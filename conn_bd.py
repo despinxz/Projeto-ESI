@@ -153,8 +153,8 @@ def busca_orientador(nusp_aluno=None):
     
     query = """
         SELECT orientador
-        FROM cursos c
-        WHERE c.aluno = %s AND c.ativo = TRUE
+        FROM alunos a
+        WHERE a.nusp = %s
     """
     
     conn = get_db_conn()
@@ -459,10 +459,10 @@ def cadastrar_usuario(tipo, dados):
                 return False
 
             cur.execute(""" 
-                INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO alunos (nusp, nome, email, senha, data_nasc, rg, local_nasc, nacionalidade, lattes, orientador) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (dados['nusp'], dados['nome'], dados['email'], dados['senha'],
-                  dados['data_nasc'], dados['rg'], dados['local_nasc'], dados['nacionalidade'], dados['lattes']))
+                  dados['data_nasc'], dados['rg'], dados['local_nasc'], dados['nacionalidade'], dados['lattes'], dados['orientador']))
 
         elif tipo == 'professor':
             cur.execute("SELECT * FROM professores WHERE nusp = %s", (dados['nusp'],))
