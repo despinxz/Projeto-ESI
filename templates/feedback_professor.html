@@ -199,34 +199,10 @@
     <section class="infos">
         <div class="info">
             <p class="label">
-                Curso
-            </p>
-            <p id="curso">
-                {{ curso }}
-            </p>
-        </div>
-        <div class="info">
-            <p class="label">
                 Lattes
             </p>
             <p id="link_lattes">
                 {{ lattes }}
-            </p>
-        </div>
-        <div class="info">
-            <p class="label">
-                Aprovações
-            </p>
-            <p id= "aprovacoes">
-                {{ aprovacoes }}
-            </p>
-        </div>
-        <div class="info">
-            <p class="label">
-                Reprovações
-            </p>
-            <p id="reprovacoes">
-                {{ reprovacoes }}
             </p>
         </div>
     </section>
@@ -285,11 +261,11 @@
     </section>
 
     <script>
-        const nusp = "{{ nusp }}";  
+        const relatorio_id = window.location.pathname.split('/').pop();;  
 
         // Função para buscar os detalhes do aluno
         function fetchDetalhesAluno() {
-            etch(`/feedback_professor/${nusp}`)
+            fetch(`/professor/feedback_professor/${relatorio_id}`)
             .then(response => response.json())
             .then(data => {
                 const detalhes = data.detalhes_aluno[0];
@@ -322,7 +298,7 @@
 
             const nivelValue = nivel.value; // Aqui capturamos o valor do nível
 
-            fetch(`/feedback_professor/${nusp}/save`, {
+            fetch(`/professor/feedback_professor/${relatorio_id}/save`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

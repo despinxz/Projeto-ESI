@@ -188,43 +188,21 @@
         </ul>
     </header>
     <section class="title">
-        <h1>
-            {{ nome_aluno }} nome_aluno - {{ nusp }} nusp
+        <h1 id="nome_aluno">
+            {{ nome }} - {{ nusp }}
         </h1>
-        <p><b>dd/mm/aaaa</b></p>
+        <h1 id="nusp"> 
+        </h1>
+        <p id="data_envio"><b>{{data_envio}}</b></p>
     </section>
 
     <section class="infos">
         <div class="info">
             <p class="label">
-                Curso
-            </p>
-            <p>
-                {{ curso }} curso_aluno
-            </p>
-        </div>
-        <div class="info">
-            <p class="label">
                 Lattes
             </p>
-            <p>
-                {{ link_lattes }} link_lattes
-            </p>
-        </div>
-        <div class="info">
-            <p class="label">
-                Aprovações
-            </p>
-            <p>
-                {{ aprovacoes }} num_aprovacoes
-            </p>
-        </div>
-        <div class="info">
-            <p class="label">
-                Reprovações
-            </p>
-            <p>
-                {{ reprovacoes }} num_reprovacoes
+            <p id="link_lattes">
+                {{ lattes }}
             </p>
         </div>
     </section>
@@ -234,30 +212,16 @@
             <p class="label">
                 Atividades Acadêmicas
             </p>
-            <p> 
-                {{ ativ_acad }} 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
+            <p id= ativ_acad> 
+                {{ atividades_academicas }}               
             </p>
         </div>
         <div>
             <p class="label">
                 Resumo da Pesquisa
             </p>
-            <p> 
-                {{ rem_pesquisa }}
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                
+            <p id="rem_pesquisa">
+                {{ resumo_pesquisa }}
             </p>
         </div>
     </section>
@@ -267,7 +231,7 @@
             Parecer do Orientador
         </p>
         <p id=parecer_professor>
-            AINDA TEM Q SEPARAR O PROF DO CCP
+            {{ parecer_professor }}
         </p>
     </section>
     
@@ -285,32 +249,32 @@
         <form action="">
             <ul>
                 <li>
-                    <input type="radio" name="nivel" id="nivel_adeq">
-                    <label for="dificuldade_sim">Adequado</label>
+                    <input type="radio" name="nivel" id="nivel_adeq" value="Adequado">
+                    <label for="nivel_adeq">Adequado</label>
                 </li>
                 <li>
-                    <input type="radio" name="nivel" id="nivel_adeq_ress">
-                    <label for="dificuldade_nao">Adequado com ressalvas</label>
+                    <input type="radio" name="nivel" id="nivel_adeq_ress" value="Adequado com ressalvas">
+                    <label for="nivel_adeq_ress">Adequado com ressalvas</label>
                 </li>
                 <li>
-                    <input type="radio" name="nivel" id="nivel-insat">
-                    <label for="dificuldade_nao">Insatisfatório</label>
+                    <input type="radio" name="nivel" id="nivel_insat" value="Insatisfatório">
+                    <label for="nivel_insat">Insatisfatório</label>
                 </li>
             </ul>
         </form>
     </section>
     <section>
-        <button>
+        <button id="enviar_parecer">
             Enviar Parecer
         </button>
     </section>
 
     <script>
-        const nusp = "{{ nusp }}";  
+        const relatorio_id = window.location.pathname.split('/').pop();;  
 
         // Função para buscar os detalhes do aluno
         function fetchDetalhesAluno() {
-            etch(`/feedback_ccp/${nusp}`)
+            fetch(`/ccp/feedback_ccp/${relatorio_id}`)
             .then(response => response.json())
             .then(data => {
                 const detalhes = data.detalhes_aluno[0];
@@ -344,7 +308,7 @@
 
             const nivelValue = nivel.value; // Aqui capturamos o valor do nível
 
-            fetch(`/feedback_ccp/${nusp}/save`, {
+            fetch(`/ccp/feedback_ccp/${relatorio_id}/save`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

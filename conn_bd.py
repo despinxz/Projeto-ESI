@@ -2,7 +2,7 @@ from flask import jsonify, flash
 import psycopg2
 from datetime import datetime
 import json
-# import env
+import env
 
 
 def get_db_conn():
@@ -12,10 +12,10 @@ def get_db_conn():
     :return: Objeto de conexão
     """
     conn = psycopg2.connect(
-        host='localhost',
+        host=env.DB_HOST,
         database='posgraduacao',
-        user='postgres',
-        password='15262435'
+        user=env.DB_USER,
+        password=env.DB_PASSWORD
     )
     return conn
 
@@ -281,7 +281,7 @@ def busca_detalhes_aluno(where=None, value=None):
     SELECT a.nome, a.nusp, r.data_envio, a.lattes, r.parecer_professor, r.atividades_resp, r.pesquisas_resp
     FROM alunos a LEFT JOIN relatorios r ON a.nusp = r.aluno"""
     if where: 
-        query += f" WHERE a.nusp = {value}"
+        query += f" WHERE r.id = {value}"
 
     conn = get_db_conn()
     cur = conn.cursor()
@@ -312,18 +312,18 @@ def busca_detalhes_aluno(where=None, value=None):
 
     return (detalhes_aluno)
 
-def salvar_parecer_prof(nusp, parecer, nivel):
+def salvar_parecer_prof(id, parecer, nivel):
     query = """
         UPDATE relatorios
         SET parecer_professor = %s, nota_professor = %s
-        WHERE aluno = %s
+        WHERE id = %s
         """
     
     conn = get_db_conn()
     cur = conn.cursor()
 
     try:
-        cur.execute(query, (parecer,nivel,nusp))
+        cur.execute(query, (parecer,nivel,id))
         conn.commit()
 
     except psycopg2.Error as e:
@@ -335,18 +335,18 @@ def salvar_parecer_prof(nusp, parecer, nivel):
 
     return True
 
-def salvar_parecer_ccp(nusp, parecer, nivel):
+def salvar_parecer_ccp(id, parecer, nivel):
     query = """
         UPDATE relatorios
         SET parecer_ccp = %s, nota_ccp = %s
-        WHERE aluno = %s
+        WHERE id = %s
         """
     
     conn = get_db_conn()
     cur = conn.cursor()
 
     try:
-        cur.execute(query, (parecer,nivel,nusp))
+        cur.execute(query, (parecer,nivel,id))
         conn.commit()
 
     except psycopg2.Error as e:

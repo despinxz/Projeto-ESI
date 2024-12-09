@@ -1,8 +1,8 @@
-const nusp = "{{ nusp }}";  
+const relatorio_id = "{{ relatorio_id }}";  
 
 // Função para buscar os detalhes do aluno
 function fetchDetalhesAluno() {
-    etch(`/feedback_professor/${nusp}`)
+    etch(`/feedback_professor/${relatorio_id}`)
     .then(response => response.json())
     .then(data => {
         const detalhes = data.detalhes_aluno[0];
@@ -35,7 +35,7 @@ document.getElementById('enviar_parecer').addEventListener('click', () => {
 
     const nivelValue = nivel.value; // Aqui capturamos o valor do nível
 
-    fetch(`/feedback_professor/${nusp}/save`, {
+    fetch(`/feedback_professor/${relatorio_id}/save`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

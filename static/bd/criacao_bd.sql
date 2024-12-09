@@ -96,3 +96,4 @@ CREATE TABLE data_entrega_relatorio (
   id SERIAL PRIMARY KEY,
   data_entrega_relatorio DATE NOT NULL
 );
+

@@ -1,8 +1,8 @@
-const nusp = "{{ nusp }}";  
+const relatorio_id = "{{ relatorio_id }}";  
 
     // Função para buscar os detalhes do aluno
     function fetchDetalhesAluno() {
-        fetch(`/feedback_ccp/${nusp}`)
+        fetch(`/feedback_ccp/${relatorio_id}`)
         .then(response => response.json())
         .then(data => {
             const detalhes = data.detalhes_aluno[0];
@@ -36,7 +36,7 @@ const nusp = "{{ nusp }}";
 
         const nivelValue = nivel.value; // Aqui capturamos o valor do nível
 
-        fetch(`/feedback_ccp/${nusp}/save`, {
+        fetch(`/feedback_ccp/${relatorio_id}/save`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
