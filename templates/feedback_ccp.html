@@ -188,43 +188,21 @@
         </ul>
     </header>
     <section class="title">
-        <h1>
-            {{ nome_aluno }} nome_aluno - {{ nusp }} nusp
+        <h1 id="nome_aluno">
+            {{ nome }} - {{ nusp }}
         </h1>
-        <p><b>dd/mm/aaaa</b></p>
+        <h1 id="nusp"> 
+        </h1>
+        <p id="data_envio"><b>{{data_envio}}</b></p>
     </section>
 
     <section class="infos">
         <div class="info">
             <p class="label">
-                Curso
-            </p>
-            <p>
-                {{ curso }} curso_aluno
-            </p>
-        </div>
-        <div class="info">
-            <p class="label">
                 Lattes
             </p>
-            <p>
-                {{ link_lattes }} link_lattes
-            </p>
-        </div>
-        <div class="info">
-            <p class="label">
-                Aprovações
-            </p>
-            <p>
-                {{ aprovacoes }} num_aprovacoes
-            </p>
-        </div>
-        <div class="info">
-            <p class="label">
-                Reprovações
-            </p>
-            <p>
-                {{ reprovacoes }} num_reprovacoes
+            <p id="link_lattes">
+                {{ lattes }}
             </p>
         </div>
     </section>
@@ -234,30 +212,16 @@
             <p class="label">
                 Atividades Acadêmicas
             </p>
-            <p> 
-                {{ ativ_acad }} 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
+            <p id= ativ_acad> 
+                {{ atividades_academicas }}               
             </p>
         </div>
         <div>
             <p class="label">
                 Resumo da Pesquisa
             </p>
-            <p> 
-                {{ rem_pesquisa }}
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt  massa nec velit interdum, ut sodales felis eleifend. Vivamus sit amet  turpis pellentesque, feugiat neque eget, facilisis sapien. Sed sagittis  viverra odio at tincidunt. Suspendisse ultricies, enim sit amet blandit  tincidunt, nulla quam 
-                
+            <p id="rem_pesquisa">
+                {{ resumo_pesquisa }}
             </p>
         </div>
     </section>
@@ -267,7 +231,7 @@
             Parecer do Orientador
         </p>
         <p id=parecer_professor>
-            AINDA TEM Q SEPARAR O PROF DO CCP
+            {{ parecer_professor }}
         </p>
     </section>
     

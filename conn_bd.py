@@ -278,7 +278,7 @@ def busca_relatorio(where=None, value=None):
 
 def busca_detalhes_aluno(where=None, value=None):
     query = """
-    SELECT a.nome, a.nusp, r.data_envio, a.curso, a.lattes, a.aprovacoes, a.reprovacoes, r.parecer_professor, r.atividades_academicas, r.resumo_pesquisa 
+    SELECT a.nome, a.nusp, r.data_envio, a.lattes, r.parecer_professor, r.atividades_resp, r.pesquisas_resp
     FROM alunos a LEFT JOIN relatorios r ON a.nusp = r.aluno"""
     if where: 
         query += f" WHERE r.id = {value}"
@@ -304,13 +304,10 @@ def busca_detalhes_aluno(where=None, value=None):
         'nome': detalhe_aluno[0],
         'nusp': detalhe_aluno[1],
         'data_envio': detalhe_aluno[2],
-        'curso': detalhe_aluno[3],
-        'lattes': detalhe_aluno[4],
-        'aprovacoes': detalhe_aluno[5],
-        'reprovacoes': detalhe_aluno[6],
-        'parecer_professor': detalhe_aluno[7],
-        'atividades_academicas': detalhe_aluno[8],
-        'resumo_pesquisa': detalhe_aluno[9]
+        'lattes': detalhe_aluno[3],
+        'parecer_professor': detalhe_aluno[4],
+        'atividades_academicas': detalhe_aluno[5],
+        'resumo_pesquisa': detalhe_aluno[6]
     })
 
     return (detalhes_aluno)
