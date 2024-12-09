@@ -249,22 +249,22 @@
         <form action="">
             <ul>
                 <li>
-                    <input type="radio" name="nivel" id="nivel_adeq">
-                    <label for="dificuldade_sim">Adequado</label>
+                    <input type="radio" name="nivel" id="nivel_adeq" value="Adequado">
+                    <label for="nivel_adeq">Adequado</label>
                 </li>
                 <li>
-                    <input type="radio" name="nivel" id="nivel_adeq_ress">
-                    <label for="dificuldade_nao">Adequado com ressalvas</label>
+                    <input type="radio" name="nivel" id="nivel_adeq_ress" value="Adequado com ressalvas">
+                    <label for="nivel_adeq_ress">Adequado com ressalvas</label>
                 </li>
                 <li>
-                    <input type="radio" name="nivel" id="nivel-insat">
-                    <label for="dificuldade_nao">Insatisfatório</label>
+                    <input type="radio" name="nivel" id="nivel_insat" value="Insatisfatório">
+                    <label for="nivel_insat">Insatisfatório</label>
                 </li>
             </ul>
         </form>
     </section>
     <section>
-        <button>
+        <button id="enviar_parecer">
             Enviar Parecer
         </button>
     </section>
@@ -274,7 +274,7 @@
 
         // Função para buscar os detalhes do aluno
         function fetchDetalhesAluno() {
-            fetch(`/feedback_ccp/${relatorio_id}`)
+            fetch(`/ccp/feedback_ccp/${relatorio_id}`)
             .then(response => response.json())
             .then(data => {
                 const detalhes = data.detalhes_aluno[0];
@@ -308,7 +308,7 @@
 
             const nivelValue = nivel.value; // Aqui capturamos o valor do nível
 
-            fetch(`/feedback_ccp/${relatorio_id}/save`, {
+            fetch(`/ccp/feedback_ccp/${relatorio_id}/save`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
