@@ -2,7 +2,7 @@ from flask import jsonify, flash
 import psycopg2
 from datetime import datetime
 import json
-# import env
+import env
 
 
 def get_db_conn():
@@ -12,10 +12,10 @@ def get_db_conn():
     :return: Objeto de conexão
     """
     conn = psycopg2.connect(
-        host='localhost',
+        host=env.DB_HOST,
         database='posgraduacao',
-        user='postgres',
-        password='15262435'
+        user=env.DB_USER,
+        password=env.DB_PASSWORD
     )
     return conn
 
